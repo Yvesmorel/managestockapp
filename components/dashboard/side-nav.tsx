@@ -3,16 +3,17 @@ import NavBar from "./nav-bar";
 import { CircleStackIcon } from "@heroicons/react/16/solid";
 export default function SideNav() {
   return (
-    <div className="flex h-full flex-col items-center px-2 py-2">
+    <div className="flex h-full flex-col items-center px-2 py-2 w-[180px]">
       <div className="font-semibold h-20 w-full bg-[#0070f2] text-white rounded-md mb-2 relative">
-        
         <div className="absolute bottom-1 left-1 flex gap-2">
-        <CircleStackIcon className="h-[22px] w-[22px]"/>
+          <CircleStackIcon className="h-[22px] w-[22px]" />
           GESTOCK
-          </div>
+        </div>
       </div>
+
       <div className="flex flex-col flex-1 w-full justify-between  ">
         <NavBar />
+        <div className="w-full flex-1 bg-[#f9fafb] my-2"></div>
         <form
           className="w-full"
           action={async () => {

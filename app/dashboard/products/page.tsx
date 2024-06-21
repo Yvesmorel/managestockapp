@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import Link from "next/link";
 import {
   Table,
   TableHeader,
@@ -14,10 +15,13 @@ export default function Page() {
     <div className="w-full max-w-6xl mx-auto px-4 py-8 md:py-12">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold">Produits</h1>
+        <Link href="/dashboard/products/create-products">
         <Button size="lg">
           <PlusIcon className="mr-2 h-5 w-5 h-[24px] w-[24px]" />
           Ajouter un produit
         </Button>
+        </Link>
+        
       </div>
       <div className="relative mb-8">
         <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
