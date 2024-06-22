@@ -1,4 +1,4 @@
-import SideNav from "@/components/dashboard/side-nav";
+import SideNav from "@/components/ui/dashboard/side-nav";
 
 function Page() {
   return (
