@@ -15,6 +15,7 @@ import { fetchProductsPages, fetchFilteredProducts } from "@/app/lib/data";
 import { ProductsTableSkeleton } from "@/components/ui/skeletons";
 import Pagination from "@/components/ui/dashboard/products/pagination";
 import Search from "@/components/ui/search";
+import { DeleteProducts, UpdateProducts } from "@/components/ui/dashboard/products/buttons";
 export default async function Page({
   searchParams,
 }: {
@@ -66,6 +67,7 @@ async function ProductsTable({
           <TableHead>Description</TableHead>
           <TableHead>Prix</TableHead>
           <TableHead>Quantité</TableHead>
+          <TableHead>Editer</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -75,6 +77,12 @@ async function ProductsTable({
             <TableCell>{product.description}</TableCell>
             <TableCell>{product.prix_unitaire}</TableCell>
             <TableCell>{product.quantite}</TableCell>
+            <TableCell>
+              <div className="flex justify-end gap-3">
+                <UpdateProducts id={product.id} />
+                <DeleteProducts id={product.id} />
+              </div>
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>

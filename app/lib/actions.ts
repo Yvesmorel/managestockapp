@@ -66,13 +66,54 @@ export async function CreateProducts(
       prix_unitaire
     )},${parseInt(quantite)},${date},'userjsqfbqjfqh1');
   `;
-  } catch (error:any) {
-   return { message:error.message,}
+  } catch (error: any) {
+    return { message: error.message };
   }
   revalidatePath("/dashboard/products");
   redirect("/dashboard/products");
 }
 
+export async function UpdateProducts(
+  id: string,
+  prevState: ProductsState,
+  formData: FormData
+) {
+  const rawData = Object.fromEntries(formData.entries());
+  console.log(rawData);
+
+  const validatedData = CreateProductsSchema.safeParse(rawData);
+
+  if (!validatedData.success) {
+    return {
+      errors: validatedData.error.flatten().fieldErrors,
+      message: "Champs manquants. Échec de la modification du produit.",
+    };
+  }
+  const { nom_produit, description, prix_unitaire, quantite } =
+    validatedData.data;
+  try {
+    await sql`UPDATE produits
+SET nom_produit = ${nom_produit},
+    description = ${description},
+    prix_unitaire =${parseInt(prix_unitaire)},
+    quantite = ${parseInt(quantite)}
+WHERE id = ${id};
+  `;
+  } catch (error: any) {
+    return { message: error.message };
+  }
+  revalidatePath("/dashboard/products");
+  redirect("/dashboard/products");
+}
+export async function deleteProducts(id: string) {
+  try {
+    await sql`DELETE FROM produits WHERE id = ${id}`;
+  } catch (error:any) {
+    console.log(error.message);
+    
+  }
+  revalidatePath('/dashboard/products');
+}
 export async function authenticate(
   prevState: string | undefined,
   formData: FormData
