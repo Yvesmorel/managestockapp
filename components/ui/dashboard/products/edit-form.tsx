@@ -7,6 +7,7 @@ import { UpdateProducts } from "@/app/lib/actions";
 import { useFormState } from "react-dom";
 import { useFormStatus } from "react-dom";
 import { Product } from "@/app/lib/definitions";
+import Link from "next/link";
 export default function EditForm({
   product,
   id,
@@ -125,7 +126,10 @@ export default function EditForm({
               </div>
             </div>
           </div>
-          <div className="flex justify-end">
+          <div className="flex justify-end gap-2 items-center">
+            <Link href="/dashboard/products">
+              <Button variant="outline" size="lg">Cancel</Button>
+            </Link>
             <UpdateProductButton />
           </div>
           {state.message && (

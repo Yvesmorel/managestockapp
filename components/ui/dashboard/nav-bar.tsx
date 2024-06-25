@@ -23,7 +23,7 @@ const navItems = [
   },
   {
     itemName: "Demandes",
-    itemLink: "/dashboard/",
+    itemLink: "/dashboard/requests",
     itemIcon: ArrowPathRoundedSquareIcon,
   },
   {

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { CreateProducts } from "@/app/lib/actions";
 import { useFormState } from "react-dom";
 import { useFormStatus } from "react-dom";
+import Link from "next/link";
 export default function Page() {
   const initialState = {
     message: "",
@@ -114,7 +115,10 @@ export default function Page() {
               </div>
             </div>
           </div>
-          <div className="flex justify-end">
+          <div className="flex justify-end gap-2 items-center">
+          <Link href="/dashboard/products">
+          <Button size="lg" variant="outline">Cancel</Button>
+          </Link>
             <CreateProductButton />
           </div>
           {state.message && (

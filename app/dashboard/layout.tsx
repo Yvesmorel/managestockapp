@@ -5,7 +5,7 @@ function Layout({ children }: { children: React.ReactNode }) {
       <div className="w-[200px]">
         <SideNav />
       </div>
-      {children}
+      <div className="flex-1 h-full overflow-y-scroll">{children}</div>
     </div>
   );
 }
