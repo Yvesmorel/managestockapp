@@ -13,7 +13,7 @@ import { PlusIcon, SearchIcon } from "lucide-react";
 import { Suspense } from "react";
 import { fetchProductsPages, fetchFilteredProducts } from "@/app/lib/data";
 import { ProductsTableSkeleton } from "@/components/ui/skeletons";
-import Pagination from "@/components/ui/dashboard/products/pagination";
+import Pagination from "@/components/ui/dashboard/pagination";
 import Search from "@/components/ui/search";
 import { DeleteProducts, UpdateProducts } from "@/components/ui/dashboard/products/buttons";
 export default async function Page({
@@ -67,12 +67,12 @@ async function ProductsTable({
           <TableHead>Description</TableHead>
           <TableHead>Prix</TableHead>
           <TableHead>Quantité</TableHead>
-          <TableHead>Editer</TableHead>
+          <TableHead className="text-right">Editer</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {products.map((product, key) => (
-          <TableRow>
+          <TableRow key={key}>
             <TableCell>{product.nom_produit}</TableCell>
             <TableCell>{product.description}</TableCell>
             <TableCell>{product.prix_unitaire}</TableCell>

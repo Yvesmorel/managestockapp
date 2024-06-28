@@ -57,22 +57,16 @@ export async function fetchFilteredRequests(
 
   try {
     const products = await sql`
-        SELECT
-  NOW() AS date_demande,
-  'Demande de données' AS libelle_demande,
-  d.nom_departement,
-  e.nom,
-  e.prenom,
-  e.poste,
-  e.adresse,
-  e.telephone
-  FROM employe AS e INNER JOIN departement AS d ON e.id_departement = d.id;
+  SELECT
+    *
+  FROM demande
         WHERE
-          d.nom_departement ILIKE ${`%${query}%`} OR
-          e.nom ILIKE ${`%${query}%`} OR
-          e.prenom ILIKE ${`%${query}%`} OR
-          e.poste ILIKE ${`%${query}%`} OR
-          e.telephone ILIKE ${`%${query}%`}
+          nom_departement ILIKE ${`%${query}%`} OR
+          nom_employe ILIKE ${`%${query}%`} OR
+          prenom_employe ILIKE ${`%${query}%`} OR
+          poste_employe ILIKE ${`%${query}%`} OR
+          adresse_employe ILIKE ${`%${query}%`} OR 
+          telephone_employe ILIKE ${`%${query}%`}
         LIMIT ${ITEMS_PER_PAGE}
         OFFSET ${offset}
       `;
@@ -84,27 +78,32 @@ export async function fetchFilteredRequests(
   }
 }
 
-export async function fetchRequestsPages(query: string) {
+export async function fetchRequestsPages(query: string): Promise<number> {
   try {
-    const countQuery = await sql`SELECT COUNT(*)
-        FROM employe AS e INNER JOIN departement AS d
-        WHERE
-            d.nom_departement ILIKE ${`%${query}%`} OR
-          e.nom ILIKE ${`%${query}%`} OR
-          e.prenom ILIKE ${`%${query}%`} OR
-          e.poste ILIKE ${`%${query}%`} OR
-          e.telephone ILIKE ${`%${query}%`}
-      `;
+    // Requête SQL pour compter le nombre d'enregistrements correspondant à la requête
+    const countQuery = await sql`
+      SELECT COUNT(*)
+      FROM demande
+      WHERE
+        nom_departement ILIKE ${`%${query}%`} OR
+          nom_employe ILIKE ${`%${query}%`} OR
+          prenom_employe ILIKE ${`%${query}%`} OR
+          poste_employe ILIKE ${`%${query}%`} OR
+          adresse_employe ILIKE ${`%${query}%`} OR 
+          telephone_employe ILIKE ${`%${query}%`}
+    `;
 
+    // Récupération du nombre d'enregistrements
     const count = countQuery.rows[0].count;
+
+    // Calcul du nombre total de pages
     const totalPages = Math.ceil(Number(count) / ITEMS_PER_PAGE);
     return totalPages;
   } catch (error) {
     console.error("Database Error:", error);
-    throw new Error("Failed to fetch total number of products.");
+    throw new Error("Failed to fetch total number of requests.");
   }
 }
-
 // export async function fetchLatestInvoices() {
 //     noStore();
 //     try {

@@ -130,6 +130,7 @@ export default function Page() {
   );
 }
 
+
 function CreateProductButton() {
   const { pending } = useFormStatus();
   return (

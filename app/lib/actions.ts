@@ -7,6 +7,31 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 // ...
+const CreateRequestFormShema = z.object({
+  id: z.string(),
+  libelle_demande: z.string({
+    required_error: "Veuillez entrer le libelle du departement",
+  }),
+  nom_departement: z.string({
+    required_error: "Veuillez Selectionner le nom du departement",
+  }),
+  nom_employe: z.string({
+    required_error: "Veuillez entrer le nom de l'employé",
+  }),
+  prenom_employe: z.string({
+    required_error: "Veuillez entrer prenom de l'employé",
+  }),
+  poste_employe: z.string({
+    required_error: "Veuillez Selectionner le poste de l'employé",
+  }),
+  adresse_employe: z.string({
+    required_error: "Veuillez entrez l'adresse de l'employé",
+  }),
+  telephone_employe: z.string({
+    required_error: "Veuillez entrez le numero de telephone de l'employé",
+  }),
+});
+
 const CreateProductsFormSchema = z.object({
   id: z.string(),
   nom_produit: z.string({
@@ -32,6 +57,23 @@ const CreateProductsSchema = CreateProductsFormSchema.omit({
   date: true,
   userid: true,
 });
+
+const CreateRequestSchema = CreateRequestFormShema.omit({
+  id: true,
+});
+
+export type RequestsState = {
+  errors?: {
+    libelle_demande?: string[];
+    nom_departement?: string[];
+    nom_employe?: string[];
+    prenom_employe?: string[];
+    poste_employe?: string[];
+    adresse_employe?: string[];
+    telephone_employe?: string[];
+  };
+  message?: string | null;
+};
 
 export type ProductsState = {
   errors?: {
@@ -108,12 +150,41 @@ WHERE id = ${id};
 export async function deleteProducts(id: string) {
   try {
     await sql`DELETE FROM produits WHERE id = ${id}`;
-  } catch (error:any) {
+  } catch (error: any) {
     console.log(error.message);
-    
   }
-  revalidatePath('/dashboard/products');
+  revalidatePath("/dashboard/products");
 }
+
+export async function CreateRequests(
+  prevState: RequestsState,
+  formData: FormData
+) {
+  const rawData = Object.fromEntries(formData.entries());
+  console.log(rawData);
+
+  const validatedData = CreateRequestSchema.safeParse(rawData);
+
+  if (!validatedData.success) {
+    return {
+      errors: validatedData.error.flatten().fieldErrors,
+      message: "Champs manquants. Échec de la création du produit.",
+    };
+  }
+  const {nom_departement,libelle_demande,nom_employe,poste_employe,prenom_employe,adresse_employe,telephone_employe } =
+    validatedData.data;
+  try {
+await sql`INSERT INTO demande (date, libelle, nom_departement, nom_employe, prenom_employe, poste_employe, adresse_employe, telephone_employe)
+VALUES (now(),${libelle_demande}, ${nom_departement}, ${nom_employe},${prenom_employe}, ${poste_employe},${adresse_employe}, ${telephone_employe});
+  `;
+  } catch (error: any) {
+    return { message: error.message };
+  }
+  revalidatePath("/dashboard/requests");
+  redirect("/dashboard/requests");
+}
+
+
 export async function authenticate(
   prevState: string | undefined,
   formData: FormData
