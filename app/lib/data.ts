@@ -139,3 +139,61 @@ export async function fetchProductById(id: string) {
     throw new Error("Failed to fetch products.");
   }
 }
+export async function fetchSupplierById(orderId: any) {
+  try {
+    const data = await sql`
+      SELECT
+      *
+        FROM commande
+      WHERE commande.id = ${orderId};
+    `;
+    return data.rows[0];
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch products.");
+  }
+}
+
+export async function fecthFilteredOrders(query: string, currentPage: number) {
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+  try {
+    const data = await sql`
+        SELECT COUNT(*)
+      FROM commande
+      WHERE
+        date_commande ILIKE ${`%${query}%`} OR
+          date_livraison ILIKE ${`%${query}%`} OR
+          num_bon_livraison ILIKE ${`%${query}%`} OR
+          statut_commande ILIKE ${`%${query}%`}
+             LIMIT ${ITEMS_PER_PAGE}
+        OFFSET ${offset}
+    `;
+    return data.rows;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch products.");
+  }
+}
+
+export async function fetchOrdersPage(query: string) {
+  try {
+    const data = sql`
+      SELECT COUNT(*)
+      FROM commande
+      WHERE
+        date_commande ILIKE ${`%${query}%`} OR
+          date_livraison ILIKE ${`%${query}%`} OR
+          num_bon_livraison ILIKE ${`%${query}%`} OR
+          statut_commande ILIKE ${`%${query}%`}
+    `;
+    // Récupération du nombre d'enregistrements
+    const count = (await data).rows[0].count;
+
+    // Calcul du nombre total de pages
+    const totalPages = Math.ceil(Number(count) / ITEMS_PER_PAGE);
+    return totalPages;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch total number of requests.");
+  }
+}

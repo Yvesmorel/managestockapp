@@ -29,7 +29,7 @@ export default async function Page({
     <div className="w-full h-full">
       <div className="grid gap-6 p-6 sm:p-8 md:p-10">
         <div className="full flex justify-between align-items">
-          <h2 className="text-2xl font-bold">Create a Request</h2>
+          <h2 className="text-2xl font-bold">Requests</h2>
 
           <Link href="/dashboard/requests/create-requests">
             <Button className="flex items-center justify-end">
@@ -67,8 +67,8 @@ async function RequestTable({
           <TableHead>Date</TableHead>
           <TableHead>Request</TableHead>
           <TableHead>Department</TableHead>
-          <TableHead>First Name</TableHead>
-          <TableHead>Last Name</TableHead>
+          <TableHead>Nom</TableHead>
+          <TableHead>Prénoms</TableHead>
           <TableHead>Position</TableHead>
           <TableHead>Address</TableHead>
           <TableHead>Phone</TableHead>
@@ -78,8 +78,9 @@ async function RequestTable({
         {requests.map((request, key) => {
           return (
             <TableRow key={key}>
+           
               {/* Demande */}
-              <TableCell>{request.date.toString()}</TableCell>
+              <TableCell>{request.date.toLocaleDateString()}</TableCell>
               <TableCell>{request.libelle}</TableCell>
               {/* Departement */}
               <TableCell>{request.nom_departement}</TableCell>

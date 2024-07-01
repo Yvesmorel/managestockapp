@@ -7,6 +7,30 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 // ...
+const CreateOrdersFormShema = z.object({
+  date_livraison: z.date({
+    required_error: "Veuillez entrer le libelle du departement",
+  }),
+  num_bon_livraison: z.string({
+    required_error: "Veuillez entrer le libelle du departement",
+  }),
+  statut_commande: z.string({
+    required_error: "Veuillez Selectionner le nom du departement",
+  }),
+  nom_fournisseur: z.string({
+    required_error: "Veuillez entrer le nom de l'employé",
+  }),
+  prenom_fournisseur: z.string({
+    required_error: "Veuillez entrer prenom de l'employé",
+  }),
+  adresse_fournisseur: z.string({
+    required_error: "Veuillez entrez l'adresse de l'employé",
+  }),
+  contact_fournisseur: z.string({
+    required_error: "Veuillez entrez le numero de telephone de l'employé",
+  }),
+});
+
 const CreateRequestFormShema = z.object({
   id: z.string(),
   libelle_demande: z.string({
@@ -171,10 +195,17 @@ export async function CreateRequests(
       message: "Champs manquants. Échec de la création du produit.",
     };
   }
-  const {nom_departement,libelle_demande,nom_employe,poste_employe,prenom_employe,adresse_employe,telephone_employe } =
-    validatedData.data;
+  const {
+    nom_departement,
+    libelle_demande,
+    nom_employe,
+    poste_employe,
+    prenom_employe,
+    adresse_employe,
+    telephone_employe,
+  } = validatedData.data;
   try {
-await sql`INSERT INTO demande (date, libelle, nom_departement, nom_employe, prenom_employe, poste_employe, adresse_employe, telephone_employe)
+    await sql`INSERT INTO demande (date, libelle, nom_departement, nom_employe, prenom_employe, poste_employe, adresse_employe, telephone_employe)
 VALUES (now(),${libelle_demande}, ${nom_departement}, ${nom_employe},${prenom_employe}, ${poste_employe},${adresse_employe}, ${telephone_employe});
   `;
   } catch (error: any) {
@@ -184,6 +215,47 @@ VALUES (now(),${libelle_demande}, ${nom_departement}, ${nom_employe},${prenom_em
   redirect("/dashboard/requests");
 }
 
+export async function CreateOrders(
+  prevState: RequestsState,
+  formData: FormData
+) {
+  const rawData = Object.fromEntries(formData.entries());
+  console.log(rawData);
+
+  const validatedData = CreateOrdersFormShema.safeParse(rawData);
+
+  if (!validatedData.success) {
+    return {
+      errors: validatedData.error.flatten().fieldErrors,
+      message: "Champs manquants. Échec de la création du produit.",
+    };
+  }
+  const date = new Date().toLocaleDateString();
+  const {
+    date_livraison,
+    nom_fournisseur,
+    num_bon_livraison,
+    statut_commande,
+    prenom_fournisseur,
+    contact_fournisseur,
+    adresse_fournisseur,
+  } = validatedData.data;
+  try {
+    await sql`WITH InsertedCommande AS (
+  INSERT INTO commande(date_commande, date_livraison, num_bon_livraison, statut_commande)
+  VALUES (CURRENT_TIMESTAMP,${date_livraison.toLocaleDateString()},${num_bon_livraison}, ${statut_commande})
+  RETURNING id
+)
+
+INSERT INTO fournisseur(nom, prenom, contact, adresse, id_commande)
+SELECT ${nom_fournisseur},${prenom_fournisseur}, ${contact_fournisseur}, ${adresse_fournisseur}, id
+FROM InsertedCommande;`;
+  } catch (error: any) {
+    return { message: error.message };
+  }
+  revalidatePath("/dashboard/requests");
+  redirect("/dashboard/requests");
+}
 
 export async function authenticate(
   prevState: string | undefined,

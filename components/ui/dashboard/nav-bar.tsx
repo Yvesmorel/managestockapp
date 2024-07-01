@@ -18,23 +18,13 @@ const navItems = [
   },
   {
     itemName: "Commandes",
-    itemLink: "/dashboard/",
+    itemLink: "/dashboard/orders",
     itemIcon: ChatBubbleBottomCenterTextIcon,
   },
   {
     itemName: "Demandes",
     itemLink: "/dashboard/requests",
     itemIcon: ArrowPathRoundedSquareIcon,
-  },
-  {
-    itemName: "Fournisseurs",
-    itemLink: "/dashboard/",
-    itemIcon: BuildingStorefrontIcon,
-  },
-  {
-    itemName: "Categories",
-    itemLink: "/dashboard/",
-    itemIcon: QueueListIcon,
   },
 ];
 const NavBar = () => {
