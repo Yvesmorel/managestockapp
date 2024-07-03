@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import Search from "@/components/ui/search";
 import { Suspense } from "react";
 import Pagination from "@/components/ui/dashboard/pagination";
-import { RequestTableSkeleton } from "@/components/ui/skeletons";
+import { RequestsTableSkeleton } from "@/components/ui/skeletons";
 import { fetchRequestsPages, fetchFilteredRequests } from "@/app/lib/data";
 import {
   Table,
@@ -40,7 +40,7 @@ export default async function Page({
         </div>
         <Search placeholder="Search products..." />
         <div className="overflow-auto border rounded-lg">
-          <Suspense fallback={<RequestTableSkeleton />}>
+          <Suspense fallback={<RequestsTableSkeleton />}>
             <RequestTable query={query} currentPage={currentPage} />
           </Suspense>
         </div>
@@ -97,3 +97,4 @@ async function RequestTable({
     </Table>
   );
 }
+

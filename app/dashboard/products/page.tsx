@@ -12,7 +12,7 @@ import {
 import { PlusIcon, SearchIcon } from "lucide-react";
 import { Suspense } from "react";
 import { fetchProductsPages, fetchFilteredProducts } from "@/app/lib/data";
-import { ProductsTableSkeleton } from "@/components/ui/skeletons";
+import { ProductsTableSkeleton,ProductTableSkeleton } from "@/components/ui/skeletons";
 import Pagination from "@/components/ui/dashboard/pagination";
 import Search from "@/components/ui/search";
 import { DeleteProducts, UpdateProducts } from "@/components/ui/dashboard/products/buttons";
@@ -40,7 +40,7 @@ export default async function Page({
       </div>
       <Search placeholder="Search products..." />
       <div className="border rounded-lg overflow-hidden">
-        <Suspense fallback={<ProductsTableSkeleton />}>
+        <Suspense fallback={<ProductTableSkeleton />}>
           <ProductsTable query={query} currentPage={currentPage} />
         </Suspense>
       </div>

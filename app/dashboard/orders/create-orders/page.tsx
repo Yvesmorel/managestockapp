@@ -47,6 +47,7 @@ export default function Component() {
           <div className="grid gap-2">
             <Label htmlFor="order-date">Order Date</Label>
             <Input
+              required
               type="date"
               id="order-date"
               name="date_livraison"
@@ -68,6 +69,7 @@ export default function Component() {
           <div className="grid gap-2">
             <Label htmlFor="delivery-number">Delivery Goods Number</Label>
             <Input
+              required
               type="text"
               id="delivery-number"
               name="num_bon_livraison"
@@ -89,6 +91,7 @@ export default function Component() {
           <div className="grid gap-2">
             <Label htmlFor="order-status">Order Status</Label>
             <Select
+              required
               name="statut_commande"
               aria-describedby="statut_commande-error"
             >
@@ -117,6 +120,7 @@ export default function Component() {
           <div className="grid gap-2">
             <Label htmlFor="last-name">Last Name</Label>
             <Input
+              required
               type="text"
               id="last-name"
               name="nom_fournisseur"
@@ -138,6 +142,7 @@ export default function Component() {
           <div className="grid gap-2">
             <Label htmlFor="first-name">First Name</Label>
             <Input
+              required
               type="text"
               id="first-name"
               name="prenom_fournisseur"
@@ -159,6 +164,7 @@ export default function Component() {
           <div className="grid gap-2">
             <Label htmlFor="contact">Contact</Label>
             <Input
+              required
               type="text"
               id="contact"
               name="contact_fournisseur"
@@ -180,6 +186,7 @@ export default function Component() {
           <div className="col-span-2 grid gap-2">
             <Label htmlFor="supplier-address">Supplier Address</Label>
             <Textarea
+              required
               id="supplier-address"
               name="adresse_fournisseur"
               rows={3}

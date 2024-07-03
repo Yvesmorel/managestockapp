@@ -4,7 +4,7 @@ import { PlusIcon } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 import Pagination from "@/components/ui/dashboard/pagination";
-import { OrdersTableSkeleton } from "@/components/ui/skeletons";
+import { OrderTableSkeleton} from "@/components/ui/skeletons";
 import { fetchOrdersPage, fecthFilteredOrders } from "@/app/lib/data";
 import { sql } from "@vercel/postgres";
 import { UpdateDelivery } from "@/components/ui/dashboard/orders/buttons";
@@ -35,7 +35,7 @@ export default async function Component({
         </div>
         <Search placeholder="rechercher une commande" />
         <div className="overflow-x-auto w-full">
-          <Suspense fallback={<OrdersTableSkeleton />}>
+          <Suspense fallback={<OrderTableSkeleton />}>
             <OrdersTable query={query} currentPage={currentPage} />
           </Suspense>
         </div>
