@@ -142,10 +142,7 @@ export async function fetchProductById(id: string) {
 export async function fetchSupplierById(orderId: any) {
   try {
     const data = await sql`
-      SELECT
-      *
-        FROM commande
-      WHERE commande.id = ${orderId};
+    SELECT * FROM commande c JOIN fournisseur f ON c.id = f.id_commande WHERE c.id =${orderId};
     `;
     return data.rows[0];
   } catch (error) {
@@ -158,11 +155,9 @@ export async function fecthFilteredOrders(query: string, currentPage: number) {
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
   try {
     const data = await sql`
-        SELECT COUNT(*)
+        SELECT *
       FROM commande
       WHERE
-        date_commande ILIKE ${`%${query}%`} OR
-          date_livraison ILIKE ${`%${query}%`} OR
           num_bon_livraison ILIKE ${`%${query}%`} OR
           statut_commande ILIKE ${`%${query}%`}
              LIMIT ${ITEMS_PER_PAGE}
@@ -181,10 +176,8 @@ export async function fetchOrdersPage(query: string) {
       SELECT COUNT(*)
       FROM commande
       WHERE
-        date_commande ILIKE ${`%${query}%`} OR
-          date_livraison ILIKE ${`%${query}%`} OR
-          num_bon_livraison ILIKE ${`%${query}%`} OR
-          statut_commande ILIKE ${`%${query}%`}
+        num_bon_livraison ILIKE ${`%${query}%`} OR
+        statut_commande ILIKE ${`%${query}%`};
     `;
     // Récupération du nombre d'enregistrements
     const count = (await data).rows[0].count;

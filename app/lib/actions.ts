@@ -8,7 +8,7 @@ import { redirect } from "next/navigation";
 
 // ...
 const CreateOrdersFormShema = z.object({
-  date_livraison: z.date({
+  date_livraison: z.string({
     required_error: "Veuillez entrer le libelle du departement",
   }),
   num_bon_livraison: z.string({
@@ -109,6 +109,18 @@ export type ProductsState = {
   message?: string | null;
 };
 
+export type OrdersState = {
+  errors?: {
+    date_livraison?: string[];
+    nom_fournisseur?: string[];
+    num_bon_livraison?: string[];
+    statut_commande?: string[];
+    prenom_fournisseur?: string[];
+    contact_fournisseur?: string[];
+    adresse_fournisseur?: string[];
+  };
+  message?: string | null;
+};
 export async function CreateProducts(
   prevState: ProductsState,
   formData: FormData
@@ -215,10 +227,7 @@ VALUES (now(),${libelle_demande}, ${nom_departement}, ${nom_employe},${prenom_em
   redirect("/dashboard/requests");
 }
 
-export async function CreateOrders(
-  prevState: RequestsState,
-  formData: FormData
-) {
+export async function CreateOrders(prevState: OrdersState, formData: FormData) {
   const rawData = Object.fromEntries(formData.entries());
   console.log(rawData);
 
@@ -230,7 +239,7 @@ export async function CreateOrders(
       message: "Champs manquants. Échec de la création du produit.",
     };
   }
-  const date = new Date().toLocaleDateString();
+
   const {
     date_livraison,
     nom_fournisseur,
@@ -240,12 +249,14 @@ export async function CreateOrders(
     contact_fournisseur,
     adresse_fournisseur,
   } = validatedData.data;
+  const date = new Date(date_livraison) as any;
   try {
     await sql`WITH InsertedCommande AS (
   INSERT INTO commande(date_commande, date_livraison, num_bon_livraison, statut_commande)
-  VALUES (CURRENT_TIMESTAMP,${date_livraison.toLocaleDateString()},${num_bon_livraison}, ${statut_commande})
+  VALUES (CURRENT_TIMESTAMP,${date},${num_bon_livraison}, ${statut_commande})
   RETURNING id
 )
+  
 
 INSERT INTO fournisseur(nom, prenom, contact, adresse, id_commande)
 SELECT ${nom_fournisseur},${prenom_fournisseur}, ${contact_fournisseur}, ${adresse_fournisseur}, id
@@ -253,8 +264,8 @@ FROM InsertedCommande;`;
   } catch (error: any) {
     return { message: error.message };
   }
-  revalidatePath("/dashboard/requests");
-  redirect("/dashboard/requests");
+  revalidatePath("/dashboard/orders");
+  redirect("/dashboard/orders");
 }
 
 export async function authenticate(
@@ -275,5 +286,28 @@ export async function authenticate(
       }
     }
     throw error;
+  }
+}
+export type ConfirmDeliveryState = {
+  message: string;
+};
+export async function ConfirmDelivery(
+  prevState: ConfirmDeliveryState,
+  formData: FormData
+) {
+  const id: string = formData.get("id") as string;
+  console.log(id);
+  try {
+    await sql`UPDATE commande SET statut_commande = 'delivered' WHERE statut_commande <> 'delivered' AND id = ${id};`;
+    revalidatePath("/dashboard/orders");
+    return {
+      message: "",
+    };
+  } catch (error: any) {
+    console.log(error.message);
+
+    return {
+      message: "",
+    };
   }
 }
