@@ -21,7 +21,7 @@ export default function Search({ placeholder }: { placeholder: string }) {
   }, 300);
   return (
     <div className="relative mb-8">
-      <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+      <SearchIcon className="absolute left-3 top-1/2 text-[#1e7376] -translate-y-1/2 h-5 w-5 text-muted-foreground" />
       <Input
         placeholder={placeholder}
         defaultValue={searchParams.get("query")?.toString()}

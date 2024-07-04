@@ -9,10 +9,10 @@ import {
   TableBody,
   TableCell,
 } from "@/components/ui/table";
-import { PlusIcon, SearchIcon } from "lucide-react";
+import { PlusIcon} from "lucide-react";
 import { Suspense } from "react";
 import { fetchProductsPages, fetchFilteredProducts } from "@/app/lib/data";
-import { ProductsTableSkeleton,ProductTableSkeleton } from "@/components/ui/skeletons";
+import {ProductTableSkeleton } from "@/components/ui/skeletons";
 import Pagination from "@/components/ui/dashboard/pagination";
 import Search from "@/components/ui/search";
 import { DeleteProducts, UpdateProducts } from "@/components/ui/dashboard/products/buttons";
@@ -32,14 +32,14 @@ export default async function Page({
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold">Produits</h1>
         <Link href="/dashboard/products/create-products">
-          <Button size="lg">
+          <Button size="lg" className="shadow">
             <PlusIcon className="mr-2 h-5 w-5 h-[24px] w-[24px]" />
             Ajouter un produit
           </Button>
         </Link>
       </div>
       <Search placeholder="Search products..." />
-      <div className="border rounded-lg overflow-hidden">
+      <div className="border rounded-lg overflow-hidden bg-white">
         <Suspense fallback={<ProductTableSkeleton />}>
           <ProductsTable query={query} currentPage={currentPage} />
         </Suspense>
@@ -79,8 +79,9 @@ async function ProductsTable({
             <TableCell>{product.quantite}</TableCell>
             <TableCell>
               <div className="flex justify-end gap-3">
+              <DeleteProducts id={product.id} />
                 <UpdateProducts id={product.id} />
-                <DeleteProducts id={product.id} />
+              
               </div>
             </TableCell>
           </TableRow>

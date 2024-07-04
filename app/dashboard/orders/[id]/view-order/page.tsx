@@ -53,8 +53,8 @@ export default async function Page({ params }: { params: { id: string } }) {
           <div className="flex justify-end">
             <Link href="/dashboard/orders">
               <Button
-                variant="outline"
-                className="bg-red-500 text-white hover:bg-red-600"
+                variant="secondary"
+                className=""
               >
                 Cancel Order
               </Button>

@@ -37,13 +37,13 @@ const NavBar = () => {
           <Link href={itemLink} className="flex">
             <button
               className={clsx(
-                "w-full flex h-[48px] grow items-center justify-start gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600",
+                "w-full flex h-[38px] grow items-center justify-start gap-2 rounded-md  p-3 text-sm font-medium hover:bg-[#e8f1f1] hover:text-[#1e7376]",
                 {
-                  "bg-sky-100 text-blue-600": currentPathname.includes(itemLink),
+                  "bg-[#e8f1f1] text-[#1e7376]": currentPathname.includes(itemLink),
                 }
               )}
             >
-              <LinkIcon className="w-6" />
+              <LinkIcon className="w-4" />
               <p className="hidden md:block">{itemName}</p>
             </button>
           </Link>
