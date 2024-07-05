@@ -139,6 +139,43 @@ export async function fetchProductById(id: string) {
     throw new Error("Failed to fetch products.");
   }
 }
+export async function fetchDepartement() {
+  try {
+    const data = await sql`
+    SELECT * FROM departement;
+    `;
+    console.log(data.rows);
+    return data.rows;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch products.");
+  }
+}
+export async function fetchCategories() {
+  try {
+    const data = await sql`
+    SELECT * FROM categorie;
+    `;
+    console.log(data.rows);
+    return data.rows;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch products.");
+  }
+}
+export async function fetchProducts() {
+  try {
+    const data = await sql`
+    SELECT * FROM produits;
+    `;
+    console.log(data.rows);
+    return data.rows;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch products.");
+  }
+}
+
 export async function fetchSupplierById(orderId: any) {
   try {
     const data = await sql`

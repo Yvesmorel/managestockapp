@@ -58,6 +58,7 @@ const CreateRequestFormShema = z.object({
 
 const CreateProductsFormSchema = z.object({
   id: z.string(),
+ 
   nom_produit: z.string({
     required_error: "Entrez le nom du produit s'il vous plait ",
   }),
@@ -73,6 +74,9 @@ const CreateProductsFormSchema = z.object({
     invalid_type_error: "Entrez un montant s'il vous plait",
   }),
   userid: z.string(),
+  categorie_id: z.string({
+    required_error: "Choisissez la categorie du produit s'il vous plait ",
+  }),
   date: z.string(),
 });
 
@@ -105,6 +109,7 @@ export type ProductsState = {
     description?: string[];
     prix_unitaire?: string[];
     quantite?: string[];
+    categorie_id?: string[];
   };
   message?: string | null;
 };
@@ -136,13 +141,17 @@ export async function CreateProducts(
       message: "Champs manquants. Échec de la création du produit.",
     };
   }
-  const { nom_produit, description, prix_unitaire, quantite } =
+
+  const { nom_produit, description, prix_unitaire, quantite, categorie_id} =
     validatedData.data;
+  const categorie=categorie_id
+  console.log(categorie);
+  
   const date = new Date().toISOString().split("T")[0];
   try {
-    await sql`INSERT INTO produits (nom_produit, description, prix_unitaire, quantite,createdat,userid) VALUES (${nom_produit}, ${description},${parseInt(
+    await sql`INSERT INTO produits (nom_produit, description, prix_unitaire, quantite,createdat,userid,id_categorie) VALUES (${nom_produit}, ${description},${parseInt(
       prix_unitaire
-    )},${parseInt(quantite)},${date},'userjsqfbqjfqh1');
+    )},${parseInt(quantite)},${date},'userjsqfbqjfqh1',${categorie});
   `;
   } catch (error: any) {
     return { message: error.message };
@@ -162,6 +171,8 @@ export async function UpdateProducts(
   const validatedData = CreateProductsSchema.safeParse(rawData);
 
   if (!validatedData.success) {
+   
+    
     return {
       errors: validatedData.error.flatten().fieldErrors,
       message: "Champs manquants. Échec de la modification du produit.",
@@ -219,6 +230,7 @@ export async function CreateRequests(
   try {
     await sql`INSERT INTO demande (date, libelle, nom_departement, nom_employe, prenom_employe, poste_employe, adresse_employe, telephone_employe)
 VALUES (now(),${libelle_demande}, ${nom_departement}, ${nom_employe},${prenom_employe}, ${poste_employe},${adresse_employe}, ${telephone_employe});
+
   `;
   } catch (error: any) {
     return { message: error.message };

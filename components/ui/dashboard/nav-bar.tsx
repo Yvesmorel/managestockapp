@@ -34,10 +34,10 @@ const NavBar = () => {
       {navItems.map(({ itemName, itemLink, itemIcon }) => {
         const LinkIcon = itemIcon;
         return (
-          <Link href={itemLink} className="flex">
+          <Link key={itemLink} href={itemLink} className="flex">
             <button
               className={clsx(
-                "w-full flex h-[38px] grow items-center justify-start gap-2 rounded-md  p-3 text-sm font-medium hover:bg-[#e8f1f1] hover:text-[#1e7376]",
+                "w-full flex h-[38px] grow items-center justify-start gap-2 rounded  p-3 text-sm font-medium hover:bg-[#e8f1f1] hover:text-[#1e7376]",
                 {
                   "bg-[#e8f1f1] text-[#1e7376]": currentPathname.includes(itemLink),
                 }

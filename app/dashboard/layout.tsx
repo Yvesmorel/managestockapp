@@ -2,7 +2,7 @@ import SideNav from "@/components/ui/dashboard/side-nav";
 import ProfilBar from "@/components/ui/dashboard/profil-bar";
 function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex w-screen h-screen">
+    <div style={{overflow:"hidden"}} className="flex w-screen h-screen">
       <div className="w-auto  border">
         <SideNav />
       </div>
