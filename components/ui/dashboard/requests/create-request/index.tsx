@@ -3,6 +3,8 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
+import { Dispatch } from "react";
+import { SetStateAction } from "react";
 import {
   Select,
   SelectTrigger,
@@ -19,6 +21,7 @@ import { CreateRequests } from "@/app/lib/actions";
 import { fetchDepartement } from "@/app/lib/data";
 import DeptSelect from "@/components/ui/dashboard/requests/depeartement-select";
 import { productQuantity } from "@/app/lib/utils";
+import { productListType } from "@/app/lib/definitions";
 
 export default function CreateRequest({
   departement,
@@ -39,7 +42,14 @@ export default function CreateRequest({
     },
     message: "",
   };
-  const [state, dispatch] = useFormState(CreateRequests, initialState);
+  const [productList, setProductList] = useState<
+    { product: string; quantity: number }[]
+  >([]);
+  const [state, dispatch] = useFormState(
+    CreateRequests.bind(null, productList),
+    initialState
+  );
+
   return (
     <div className="w-full h-full">
       <form className="grid gap-6 p-6 sm:p-8 md:p-10" action={dispatch}>
@@ -105,7 +115,6 @@ export default function CreateRequest({
             <Label htmlFor="nom_employe">First Name</Label>
             <Input
               aria-describedby="nom_employe-error"
-              required
               id="nom_employe"
               placeholder="Enter your first name"
               name="nom_employe"
@@ -203,7 +212,11 @@ export default function CreateRequest({
               ))}
           </div>
         </div>
-        <ProductManagement products={products} />
+        <ProductManagement
+          productList={productList}
+          setProductList={setProductList}
+          products={products}
+        />
         <div className="flex justify-end gap-2">
           <Link href="/dashboard/requests">
             <Button variant="outline">Cancel</Button>
@@ -226,18 +239,23 @@ function CreateRequestButton() {
   );
 }
 
-function ProductManagement({ products }: { products: QueryResultRow[] }) {
+function ProductManagement({
+  products,
+  productList,
+  setProductList,
+}: {
+  products: QueryResultRow[];
+  productList: productListType;
+  setProductList: Dispatch<SetStateAction<productListType>>;
+}) {
   const [selectedProduct, setSelectedProduct] = useState("");
   const [quantity, setQuantity] = useState(1);
-  const [productList, setProductList] = useState<
-    { product: string; quantity: number }[]
-  >([]);
 
   const handleAddProduct = () => {
     if (selectedProduct && quantity > 0) {
       setProductList([...productList, { product: selectedProduct, quantity }]);
       setSelectedProduct("");
-      setQuantity(0);
+      setQuantity(1);
     }
   };
 
@@ -268,7 +286,7 @@ function ProductManagement({ products }: { products: QueryResultRow[] }) {
             <SelectContent>
               {products.map((product, key) => {
                 return (
-                  <SelectItem key={key} value={`${product.id}`}>
+                  <SelectItem key={key} value={`${product.nom_produit}`}>
                     {`${product.nom_produit}`}
                   </SelectItem>
                 );
@@ -291,7 +309,7 @@ function ProductManagement({ products }: { products: QueryResultRow[] }) {
             placeholder="Quantité"
             value={quantity}
             min={1}
-            max={`${productQuantity(products, selectedProduct)}`}
+            // max={productQuantity(products, selectedProduct)}
             onChange={(e) => setQuantity(Number(e.target.value))}
           />
         </div>

@@ -13,7 +13,7 @@ import {
   TableCell,
 } from "@/components/ui/table";
 import Link from "next/link";
-import { PlusIcon } from "lucide-react";
+import { EyeIcon, PlusIcon } from "lucide-react";
 export default async function Page({
   searchParams,
 }: {
@@ -95,6 +95,12 @@ async function RequestTable({
           </th>
           <th
             scope="col"
+            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-right"
+          >
+            Edit
+          </th>
+          {/* <th
+            scope="col"
             className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
           >
             Position
@@ -110,7 +116,7 @@ async function RequestTable({
             className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
           >
             Phone
-          </th>
+          </th> */}
         </tr>
       </thead>
       <tbody className="bg-white divide-y divide-gray-200">
@@ -126,15 +132,35 @@ async function RequestTable({
                 <div className="text-sm text-gray-900">{request.libelle}</div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
-                <div className="text-sm text-gray-900">{request.nom_departement}</div>
+                <div className="text-sm text-gray-900">
+                  {request.nom_departement}
+                </div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
-                <div className="text-sm text-gray-900">{request.nom_employe}</div>
+                <div className="text-sm text-gray-900">
+                  {request.nom_employe}
+                </div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
-                <div className="text-sm text-gray-900">{request.prenom_employe}</div>
+                <div className="text-sm text-gray-900">
+                  {request.prenom_employe}
+                </div>
               </td>
-              <td className="px-6 py-4 whitespace-nowrap">
+              <td className="px-6 py-4 whitespace-nowrap text-right">
+                <div className="flex items-center space-x-4 justify-end">
+                  <Link href={`/dashboard/requests/${request.id}/view-request`}>
+                    <Button
+                      variant="secondary"
+                      type="button"
+                      className="bg-white px-2 py-1 rounded-md hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+                    >
+                      <EyeIcon className="w-4 mr-2" />
+                      voir plus
+                    </Button>
+                  </Link>
+                </div>
+              </td>
+              {/* <td text-right className="px-6 py-4 whitespace-nowrap">
                 <div className="text-sm text-gray-900">{request.poste_employe}</div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
@@ -142,7 +168,7 @@ async function RequestTable({
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="text-sm text-gray-900">{request.telephone_employe}</div>
-              </td>
+              </td> */}
             </tr>
           );
         })}
@@ -150,4 +176,3 @@ async function RequestTable({
     </table>
   );
 }
-

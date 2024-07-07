@@ -35,10 +35,10 @@ export const generatePagination = (currentPage: number, totalPages: number) => {
 
 export const productQuantity = (
   products: QueryResultRow[],
-  productId: string
+  nom_produit: string
 ) => {
   return (
-    products.find((product) => product.id === parseInt(productId))?.quantite ||
+    products.find((product) => product.nom_produit === parseInt(nom_produit))?.quantite ||
     0
   );
 };

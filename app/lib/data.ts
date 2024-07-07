@@ -70,6 +70,7 @@ export async function fetchFilteredRequests(
         LIMIT ${ITEMS_PER_PAGE}
         OFFSET ${offset}
       `;
+    console.log(products.rows);
 
     return products.rows;
   } catch (error) {
@@ -164,6 +165,7 @@ export async function fetchCategories() {
   }
 }
 export async function fetchProducts() {
+  noStore();
   try {
     const data = await sql`
     SELECT * FROM produits;
@@ -180,6 +182,18 @@ export async function fetchSupplierById(orderId: any) {
   try {
     const data = await sql`
     SELECT * FROM commande c JOIN fournisseur f ON c.id = f.id_commande WHERE c.id =${orderId};
+    `;
+    return data.rows[0];
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch products.");
+  }
+}
+
+export async function fetchRequestById(requestId: any) {
+  try {
+    const data = await sql`
+    SELECT * FROM demande WHERE demande.id =${requestId};
     `;
     return data.rows[0];
   } catch (error) {

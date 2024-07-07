@@ -5,6 +5,7 @@ import { z } from "zod";
 import { sql } from "@vercel/postgres";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { productListType } from "./definitions";
 
 // ...
 const CreateOrdersFormShema = z.object({
@@ -58,7 +59,7 @@ const CreateRequestFormShema = z.object({
 
 const CreateProductsFormSchema = z.object({
   id: z.string(),
- 
+
   nom_produit: z.string({
     required_error: "Entrez le nom du produit s'il vous plait ",
   }),
@@ -142,11 +143,9 @@ export async function CreateProducts(
     };
   }
 
-  const { nom_produit, description, prix_unitaire, quantite, categorie_id} =
+  const { nom_produit, description, prix_unitaire, quantite, categorie_id } =
     validatedData.data;
-  const categorie=categorie_id
-  console.log(categorie);
-  
+  const categorie = categorie_id;
   const date = new Date().toISOString().split("T")[0];
   try {
     await sql`INSERT INTO produits (nom_produit, description, prix_unitaire, quantite,createdat,userid,id_categorie) VALUES (${nom_produit}, ${description},${parseInt(
@@ -171,8 +170,6 @@ export async function UpdateProducts(
   const validatedData = CreateProductsSchema.safeParse(rawData);
 
   if (!validatedData.success) {
-   
-    
     return {
       errors: validatedData.error.flatten().fieldErrors,
       message: "Champs manquants. Échec de la modification du produit.",
@@ -204,14 +201,13 @@ export async function deleteProducts(id: string) {
 }
 
 export async function CreateRequests(
+  productList: productListType,
   prevState: RequestsState,
   formData: FormData
 ) {
   const rawData = Object.fromEntries(formData.entries());
-  console.log(rawData);
 
   const validatedData = CreateRequestSchema.safeParse(rawData);
-
   if (!validatedData.success) {
     return {
       errors: validatedData.error.flatten().fieldErrors,
@@ -227,10 +223,31 @@ export async function CreateRequests(
     adresse_employe,
     telephone_employe,
   } = validatedData.data;
-  try {
-    await sql`INSERT INTO demande (date, libelle, nom_departement, nom_employe, prenom_employe, poste_employe, adresse_employe, telephone_employe)
-VALUES (now(),${libelle_demande}, ${nom_departement}, ${nom_employe},${prenom_employe}, ${poste_employe},${adresse_employe}, ${telephone_employe});
 
+  const productArrayString = productList
+    .map(
+      (product) =>
+        `{"produit":${product.product}, "quantite": ${product.quantity}}`
+    )
+    .join(", ");
+  const product = `[${productArrayString}]`;
+  console.log(product);
+  try {
+    await sql`
+    INSERT INTO demande (
+      date, libelle, nom_departement, nom_employe, prenom_employe, poste_employe, adresse_employe, telephone_employe, produits, list_produits
+    ) VALUES (
+      now(),
+      ${libelle_demande}, 
+      ${nom_departement}, 
+      ${nom_employe},
+      ${prenom_employe}, 
+      ${poste_employe},
+      ${adresse_employe}, 
+      ${telephone_employe},
+      null,
+      ${product}
+    );
   `;
   } catch (error: any) {
     return { message: error.message };
