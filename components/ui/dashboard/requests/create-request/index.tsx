@@ -18,6 +18,7 @@ import { useFormState } from "react-dom";
 import { CreateRequests } from "@/app/lib/actions";
 import { fetchDepartement } from "@/app/lib/data";
 import DeptSelect from "@/components/ui/dashboard/requests/depeartement-select";
+import { productQuantity } from "@/app/lib/utils";
 
 export default function CreateRequest({
   departement,
@@ -224,9 +225,10 @@ function CreateRequestButton() {
     </Button>
   );
 }
+
 function ProductManagement({ products }: { products: QueryResultRow[] }) {
   const [selectedProduct, setSelectedProduct] = useState("");
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(1);
   const [productList, setProductList] = useState<
     { product: string; quantity: number }[]
   >([]);
@@ -266,14 +268,15 @@ function ProductManagement({ products }: { products: QueryResultRow[] }) {
             <SelectContent>
               {products.map((product, key) => {
                 return (
-                  <SelectItem key={key} value={product.nom_produit}>
-                    {product.nom_produit}
+                  <SelectItem key={key} value={`${product.id}`}>
+                    {`${product.nom_produit}`}
                   </SelectItem>
                 );
               })}
             </SelectContent>
           </Select>
         </div>
+
         <div className="space-y-2">
           <label
             htmlFor="quantity_input"
@@ -287,6 +290,8 @@ function ProductManagement({ products }: { products: QueryResultRow[] }) {
             className="form-input mt-1 block w-full"
             placeholder="Quantité"
             value={quantity}
+            min={1}
+            max={`${productQuantity(products, selectedProduct)}`}
             onChange={(e) => setQuantity(Number(e.target.value))}
           />
         </div>
@@ -294,14 +299,14 @@ function ProductManagement({ products }: { products: QueryResultRow[] }) {
       <div className="flex gap-2 mb-6">
         <button
           type="button"
-          className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+          className="bg-[#1e7376] text-[#e8f1f1] text-white px-4 py-2 rounded-md hover:opacity-40 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
           onClick={handleAddProduct}
         >
           Ajouter
         </button>
         <button
           type="button"
-          className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+          className="bg-[#e8f1f1] text-[#1e7376]  px-4 py-2 rounded-md hover:opacity-40 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
           onClick={() => setProductList([])}
         >
           Supprimer tout

@@ -14,8 +14,10 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useFormState, useFormStatus } from "react-dom";
 import { CreateOrders } from "@/app/lib/actions";
-import { useState } from "react";
-export default function Component() {
+import { QueryResultRow } from "@vercel/postgres";
+export default function CreateOrder({products}:{
+    products:QueryResultRow[]
+}) {
   const initialState = {
     errors: {
       date_livraison: [],
@@ -205,15 +207,10 @@ export default function Component() {
                 ))}
             </div>
           </div>
-          <div className="col-span-4">
-            <ProductManagement />
-          </div>
-
           {state.message && (
             <p className="mt-2 text-sm text-red-500">{state.message}</p>
           )}
-
-          <div className="flex col-span-4 justify-end gap-2">
+          <div className="flex justify-end gap-2">
             <Link href="/dashboard/orders">
               <Button variant="secondary">Cancel</Button>
             </Link>
@@ -230,103 +227,5 @@ function CreateOrdersButton() {
     <Button type="submit" disabled={pending}>
       Submit Order
     </Button>
-  );
-}
-
-function ProductManagement() {
-  const [product, setProduct] = useState("");
-  const [quantity, setQuantity] = useState(1);
-  const [productList, setProductList] = useState<
-    { product: string; quantity: number }[]
-  >([]);
-
-  const handleAddProduct = () => {
-    if (product && quantity > 0) {
-      setProductList([...productList, { product: product, quantity }]);
-      setProduct("");
-      setQuantity(0);
-    }
-  };
-
-  const handleRemoveProduct = (index: number) => {
-    const updatedList = productList.filter((_, i) => i !== index);
-    setProductList(updatedList);
-  };
-
-  return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-6">Product Management</h1>
-      <div className="grid grid-cols-1 gap-4 mb-6">
-        <div className="space-y-2">
-          <label
-            htmlFor="product_select"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Produit
-          </label>
-
-          <Input
-            id="product-name"
-            type="text"
-            className="form-input mt-1 block w-full"
-            placeholder="Produit"
-            value={product}
-            onChange={(e) => setProduct(e.target.value)}
-          />
-        </div>
-        <div className="space-y-2">
-          <label
-            htmlFor="quantity_input"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Quantité
-          </label>
-          <Input
-            id="quantity_input"
-            type="number"
-            className="form-input mt-1 block w-full"
-            placeholder="Quantité"
-            value={quantity}
-            min={1}
-            onChange={(e) => setQuantity(Number(e.target.value))}
-          />
-        </div>
-      </div>
-      <div className="flex gap-2 mb-6">
-        <button
-          type="button"
-          className="bg-[#1e7376] text-[#e8f1f1] text-white px-4 py-2 rounded-md hover:opacity-40 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-          onClick={handleAddProduct}
-        >
-          Ajouter
-        </button>
-        <button
-          type="button"
-          className="bg-[#e8f1f1] text-[#1e7376]  px-4 py-2 rounded-md hover:opacity-40 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-          onClick={() => setProductList([])}
-        >
-          Supprimer tout
-        </button>
-      </div>
-      <div>
-        <h2 className="text-xl font-bold mb-4">Liste des produits</h2>
-        <ul className="list-disc list-inside">
-          {productList.map((item, index) => (
-            <li key={index} className="flex justify-between items-center mb-4">
-              <span>
-                {item.product} - Quantité: {item.quantity}
-              </span>
-              <Button
-                type="button"
-                className="bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-                onClick={() => handleRemoveProduct(index)}
-              >
-                Supprimer
-              </Button>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
   );
 }
