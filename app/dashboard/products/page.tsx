@@ -48,7 +48,7 @@ export default async function Page({
           </Button>
         </Link>
       </div>
-      <Search placeholder="Search products..." />
+      <Search placeholder="Rechercher un produit..." />
       <div className="border rounded-lg overflow-hidden bg-white">
         <Suspense fallback={<ProductTableSkeleton />}>
           <ProductsTable query={query} currentPage={currentPage} />

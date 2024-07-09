@@ -38,7 +38,7 @@ export default async function Component({
           </Button>
         </Link>
       </div>
-      <Search placeholder="Rechercher une commande" />
+      <Search placeholder="Rechercher une commande..." />
       <div className="border rounded-lg overflow-hidden">
         <Suspense fallback={<OrderTableSkeleton />}>
           <OrdersTable query={query} currentPage={currentPage} />
