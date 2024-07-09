@@ -16,6 +16,7 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import CategorieSelect from "@/components/ui/dashboard/products/categorie-select";
+import LoadingButton from "@/components/ui/loading-button";
 export default function CreateProduct({
   categories,
 
@@ -195,7 +196,9 @@ function CreateProductButton() {
         aria-disabled={pending}
         disabled={pending}
       >
-        Enregistrer le produit
+        
+        {!pending && <p>Enregistrer le produit</p>}
+      {pending && <LoadingButton />}
       </Button>
     </div>
   );

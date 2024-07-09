@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { poppins } from "@/components/ui/font";
 import "./globals.css";
+import LoaderPageAnimation from "@/components/ui/LoaderPage";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en" style={{overflow:"hidden"}}>
       <body  className={inter.className}>{children}</body>
-      
+      <LoaderPageAnimation/>
     </html>
   );
 }

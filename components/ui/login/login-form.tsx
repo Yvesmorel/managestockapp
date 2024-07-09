@@ -16,6 +16,7 @@ import { useFormState, useFormStatus } from "react-dom";
 import { authenticate } from "@/app/lib/actions";
 import { CircleStackIcon } from "@heroicons/react/16/solid";
 import Image from "next/image";
+import LoadingButton from "../loading-button";
 const LoginForm = () => {
   const [errorMessage, dispatch] = useFormState(authenticate, undefined);
   return (
@@ -25,7 +26,7 @@ const LoginForm = () => {
           src="./login-illust.svg"
           alt="illustration"
           width={300}
-          height={400}
+          height={300}
         />
       </div>
       <Card className="w-full h-full max-w-md border-none shadow-none bg-[#e8f1f178]">
@@ -96,7 +97,7 @@ const LoginButton = () => {
   return (
     <Button className="w-full" disabled={pending} aria-disabled={pending}>
       {!pending && <p>Connctez vous</p>}
-      {pending && <p>Chargement</p>}
+      {pending && <LoadingButton />}
     </Button>
   );
 };

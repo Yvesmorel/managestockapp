@@ -44,7 +44,7 @@ async function CategoryCard({ category }: { category: QueryResultRow }) {
         <div className="p-6">
           <h2 className="text-lg font-semibold mb-2">{category.nom}</h2>
           <p className="text-gray-500 text-sm">
-            {currentCategoryProductsCount} produits
+            {currentCategoryProductsCount.total_quantite || 0} produits
           </p>
         </div>
       </div>

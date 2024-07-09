@@ -114,22 +114,6 @@ export function RequestTableRowSkeleton() {
         <div className="h-6 w-16 rounded bg-gray-100"></div>
       </TableCell>
 
-      <TableCell className="whitespace-nowrap px-3 py-3">
-        <div className="h-6 w-16 rounded bg-gray-100"></div>
-      </TableCell>
-
-      <TableCell className="whitespace-nowrap px-3 py-3">
-        <div className="h-6 w-16 rounded bg-gray-100"></div>
-      </TableCell>
-
-      <TableCell className="whitespace-nowrap px-3 py-3">
-        <div className="h-6 w-16 rounded bg-gray-100"></div>
-      </TableCell>
-
-      <TableCell className="whitespace-nowrap px-3 py-3">
-        <div className="h-6 w-16 rounded bg-gray-100"></div>
-      </TableCell>
-
       <TableCell className="whitespace-nowrap py-3 pl-6 pr-3">
         <div className="flex justify-end gap-3">
           <div className="h-[38px] w-[38px] rounded bg-gray-100"></div>
@@ -187,10 +171,6 @@ export function RequestTableSkeleton() {
                 <TableHead>Request</TableHead>
                 <TableHead>Department</TableHead>
                 <TableHead>First Name</TableHead>
-                <TableHead>Last Name</TableHead>
-                <TableHead>Position</TableHead>
-                <TableHead>Address</TableHead>
-                <TableHead>Phone</TableHead>
                 <TableHead className="text-right">Editer</TableHead>
               </TableRow>
             </TableHeader>
@@ -212,30 +192,6 @@ export function OrdersTableRowSkeleton() {
     <TableRow className="w-full border-b border-gray-100 last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg">
       <TableCell className="whitespace-nowrap px-3 py-3">
         <div className="h-6 w-32 rounded bg-gray-100"></div>
-      </TableCell>
-
-      <TableCell className="whitespace-nowrap px-3 py-3">
-        <div className="h-6 w-16 rounded bg-gray-100"></div>
-      </TableCell>
-
-      <TableCell className="whitespace-nowrap px-3 py-3">
-        <div className="h-6 w-16 rounded bg-gray-100"></div>
-      </TableCell>
-
-      <TableCell className="whitespace-nowrap px-3 py-3">
-        <div className="h-6 w-16 rounded bg-gray-100"></div>
-      </TableCell>
-
-      <TableCell className="whitespace-nowrap px-3 py-3">
-        <div className="h-6 w-16 rounded bg-gray-100"></div>
-      </TableCell>
-
-      <TableCell className="whitespace-nowrap px-3 py-3">
-        <div className="h-6 w-16 rounded bg-gray-100"></div>
-      </TableCell>
-
-      <TableCell className="whitespace-nowrap px-3 py-3">
-        <div className="h-6 w-16 rounded bg-gray-100"></div>
       </TableCell>
 
       <TableCell className="whitespace-nowrap px-3 py-3">
@@ -295,13 +251,9 @@ export function OrdersTableSkeleton() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Order Date</TableHead>
+             
                 <TableHead>Delivery Goods Number</TableHead>
                 <TableHead>Order Status</TableHead>
-                <TableHead>Last Name</TableHead>
-                <TableHead>First Name</TableHead>
-                <TableHead>Contact</TableHead>
-                <TableHead>Supplier Address</TableHead>
                 <TableHead className="text-right">Editer</TableHead>
               </TableRow>
             </TableHeader>

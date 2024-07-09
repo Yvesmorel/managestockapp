@@ -279,7 +279,7 @@ export async function fetchCategoryPage(query: string) {
   try {
     const data = sql`
       SELECT COUNT(*)
-      FROM categorie
+      FROM categorie 
       WHERE
         nom ILIKE ${`%${query}%`};
     `;
@@ -299,9 +299,14 @@ export async function CountProductByCategory(categoryId: any) {
   noStore();
   try {
     const data = await sql`
-    SELECT COUNT(*) FROM categorie c JOIN produits p ON c.id_categorie = p.id_categorie WHERE c.id_categorie =${categoryId} AND p.quantite <> 0;
+    SELECT SUM(p.quantite) AS total_quantite
+FROM categorie c
+JOIN produits p ON c.id_categorie = p.id_categorie
+WHERE c.id_categorie = ${categoryId}
+  AND p.quantite <> 0;
+;
     `;
-    const count = data.rows[0].count;
+    const count = data.rows[0];
     return count;
   } catch (error) {
     console.error("Database Error:", error);

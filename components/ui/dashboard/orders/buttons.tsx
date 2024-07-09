@@ -4,7 +4,8 @@ import { useFormState } from "react-dom";
 import { Button } from "../../button";
 import { QueryResultRow } from "@vercel/postgres";
 import { SaveProductType } from "@/app/lib/definitions";
-
+import { useFormStatus } from "react-dom";
+import LoadingButton from "../../loading-button";
 export function UpdateDelivery({
   id,
   list_produit,
@@ -22,14 +23,21 @@ export function UpdateDelivery({
   return (
     <form action={dispatch}>
       <input type="hidden" name="id" value={id} />
-      <Button
-        disabled={dislabled}
-        variant="outline"
-        type="submit"
-        className=" px-2 py-1 rounded-md  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-      >
-        Confirmer la livraison
-      </Button>
+      <ConfirmDeliveryButton dislabled={dislabled} />
     </form>
+  );
+}
+
+function ConfirmDeliveryButton({ dislabled }: { dislabled: boolean }) {
+  const { pending } = useFormStatus();
+  return (
+    <Button
+      disabled={dislabled || pending}
+      variant="outline"
+      type="submit"
+      className=" px-2 py-1 rounded-md  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+    >
+      <p>Confirmer la livraison</p>
+    </Button>
   );
 }

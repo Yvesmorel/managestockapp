@@ -8,6 +8,7 @@ import { useFormState } from "react-dom";
 import { useFormStatus } from "react-dom";
 import { Product } from "@/app/lib/definitions";
 import Link from "next/link";
+import LoadingButton from "../../loading-button";
 export default function EditForm({
   product,
   id,
@@ -128,7 +129,9 @@ export default function EditForm({
           </div>
           <div className="flex justify-end gap-2 items-center">
             <Link href="/dashboard/products">
-              <Button variant="outline" size="lg">Retour</Button>
+              <Button variant="outline" size="lg">
+                Retour
+              </Button>
             </Link>
             <UpdateProductButton />
           </div>
@@ -151,7 +154,8 @@ function UpdateProductButton() {
         aria-disabled={pending}
         disabled={pending}
       >
-        Modifier le produit
+        {!pending && <p>Modifier le produit</p>}
+        {pending && <LoadingButton />}
       </Button>
     </div>
   );

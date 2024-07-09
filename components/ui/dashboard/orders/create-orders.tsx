@@ -17,6 +17,7 @@ import { CreateOrders } from "@/app/lib/actions";
 import { useState, useRef, Dispatch, SetStateAction } from "react";
 import { SaveProductType } from "@/app/lib/definitions";
 import { QueryResultRow } from "@vercel/postgres";
+import LoadingButton from "../../loading-button";
 export default function CreateOders({
   categories,
 }: {
@@ -130,7 +131,7 @@ export default function CreateOders({
             </div>
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="last-name">Nom</Label>
+            <Label htmlFor="last-name">Nom  du fournisseur</Label>
             <Input
               required
               type="text"
@@ -152,7 +153,7 @@ export default function CreateOders({
             </div>
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="first-name">Prénom</Label>
+            <Label htmlFor="first-name">Prénom  du fournisseur</Label>
             <Input
               required
               type="text"
@@ -174,7 +175,7 @@ export default function CreateOders({
             </div>
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="contact">Contact</Label>
+            <Label htmlFor="contact">Contact  du fournisseur</Label>
             <Input
               required
               type="text"
@@ -249,7 +250,9 @@ function CreateOrdersButton({
   const { pending } = useFormStatus();
   return (
     <Button type="submit" disabled={pending || productList.length === 0}>
-      Enregistrer la commande
+     
+      {!pending && <p> Enregistrer la commande</p>}
+      {pending && <LoadingButton />}
     </Button>
   );
 }

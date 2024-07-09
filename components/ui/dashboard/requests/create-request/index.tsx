@@ -22,6 +22,7 @@ import { fetchDepartement } from "@/app/lib/data";
 import DeptSelect from "@/components/ui/dashboard/requests/depeartement-select";
 import { productQuantity } from "@/app/lib/utils";
 import { productListType } from "@/app/lib/definitions";
+import LoadingButton from "@/components/ui/loading-button";
 
 export default function CreateRequest({
   departement,
@@ -247,7 +248,9 @@ function CreateRequestButton({
       aria-disabled={pending}
       disabled={pending || productList.length === 0}
     >
-      Ajouter la demande
+      {!pending && <p>Ajouter la demande</p>}
+      {pending && <LoadingButton />}
+      
     </Button>
   );
 }
