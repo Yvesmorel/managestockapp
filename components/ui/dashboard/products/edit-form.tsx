@@ -117,7 +117,7 @@ export default function EditForm({
             </div>
             <div className="sm:col-span-4 flex-1">
               <Label htmlFor="categorie_id">Categories</Label>
-              <Select name="categorie_id" defaultValue={`${`${product.id_categorie}`}`}>
+              <Select name="categorie_id"  defaultValue={`${`${product.id_categorie}`}`}>
                 <SelectTrigger>
                   <SelectValue
                     aria-describedby="categorie_id-error"
