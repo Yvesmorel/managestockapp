@@ -4,13 +4,13 @@ import { signOut } from "@/auth";
 import { LogOutIcon } from "lucide-react";
 export default function ProfilBar() {
   return (
-    <div className="flex items-center justify-between bg-background px-4 py-3 border border-bottom">
-      <div className="flex items-center gap-2">
-        <Avatar className="h-8 w-8">
-          <AvatarImage src="/placeholder-user.jpg" />
-          <AvatarFallback>GS</AvatarFallback>
+    <div className="flex items-center justify-between bg-background px-1 py-3 ">
+      <div className="flex items-center h-auto gap-2">
+        <Avatar className="h-4 w-4 rounded">
+          <AvatarImage src="/user.png" sizes="10" />
+          {/* <AvatarFallback>GS</AvatarFallback> */}
         </Avatar>
-        <div className="text-sm font-medium text-foreground">
+        <div className="text-sm font-thin text-foreground">
           v-1.0.0~admin
         </div>
       </div>

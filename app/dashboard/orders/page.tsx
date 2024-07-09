@@ -39,7 +39,7 @@ export default async function Component({
         </Link>
       </div>
       <Search placeholder="Rechercher une commande..." />
-      <div className="border rounded-lg overflow-hidden">
+      <div className="border-none rounded-lg overflow-hidden greenShadow">
         <Suspense fallback={<OrderTableSkeleton />}>
           <OrdersTable query={query} currentPage={currentPage} />
         </Suspense>
@@ -61,7 +61,7 @@ async function OrdersTable({
   const orders = await fecthFilteredOrders(query, currentPage);
 
   return (
-    <table className="min-w-full divide-y divide-gray-200 bottomToTop">
+    <table className="min-w-full divide-y divide-gray-200 bottomToTop ">
       <thead className="bg-white">
         <tr>
           {/* <th

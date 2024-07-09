@@ -15,20 +15,20 @@ export default async function Page({ params }: { params: { id: string } }) {
         <h1 className="text-2xl font-bold mb-6 text-[#1e7376]">
           Details de la demande
         </h1>
-        <div className="bg-white rounded-lg shadow-md p-6 space-y-4">
+        <div className="bg-white rounded-lg greenShadow p-6 space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
               <p className="text-muted-foreground">Date</p>
               <p>{new Date(request.date).toLocaleDateString()}</p>
             </div>
             <div>
-              <p className="text-muted-foreground">Libellé</p>
+              <p className="text-muted-foreground">Libellé de la demande</p>
               <p className=" font-medium">{request.libelle}</p>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <p className="text-muted-foreground">Nom du Département</p>
+              <p className="text-muted-foreground">Département de l'Employé</p>
               <p>{request.nom_departement}</p>
             </div>
             <div>
@@ -74,7 +74,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
           {request.list_produits.map((product: any, key: any) => {
             return (
-              <div className="bg-white rounded-lg shadow-md p-6 space-y-4">
+              <div className="bg-white rounded-lg greenShadow p-6 space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <p className="text-muted-foreground">Nom</p>

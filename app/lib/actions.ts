@@ -113,6 +113,16 @@ export type ProductsState = {
   message?: string | null;
 };
 
+export type UpdateProductsState = {
+  errors?: {
+    nom_produit?: string[];
+    description?: string[];
+    prix_unitaire?: string[];
+    quantite?: string[];
+    categorie_id?: string[];
+  };
+  message?: string | null;
+};
 export type OrdersState = {
   errors?: {
     date_livraison?: string[];
@@ -173,14 +183,17 @@ export async function UpdateProducts(
       message: "Champs manquants. Échec de la modification du produit.",
     };
   }
-  const { nom_produit, description, prix_unitaire, quantite } =
+  const { nom_produit, description, prix_unitaire, quantite,categorie_id } =
     validatedData.data;
+    console.log('caegorie',categorie_id);
+    
   try {
     await sql`UPDATE produits
 SET nom_produit = ${nom_produit},
     description = ${description},
     prix_unitaire =${parseInt(prix_unitaire)},
-    quantite = ${parseInt(quantite)}
+    quantite = ${parseInt(quantite)},
+    id_categorie = ${categorie_id}
 WHERE id = ${id};
   `;
   } catch (error: any) {
@@ -280,15 +293,11 @@ async function saveDeliveredProduct(products: SaveProductType[]) {
       quantity,
       category,
     } = product;
-    console.log( price,
-     nom_produit,
-      description,
-      quantity,
-      category);
+
     
 
     await sql`
-      INSERT INTO produits (nom_produit, description, prix_unitaire, quantite,createdat,userid,id_categorie) VALUES (${nom_produit}, ${description},${price},${quantity},${date},'userjsqfbqjfqh1',${category});
+      INSERT INTO produits (nom_produit, description, prix_unitaire, quantite,createdat,userid,id_categorie) VALUES (${nom_produit}, ${description},${price},${quantity},${date},'userjsqfbqjfqh1',${category.split(' ')[0]});
     `;
   }
 }

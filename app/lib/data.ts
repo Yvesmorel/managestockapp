@@ -129,6 +129,7 @@ export async function fetchRequestsPages(query: string): Promise<number> {
 //     }
 //   }
 export async function fetchProductById(id: string) {
+  noStore();
   try {
     const data = await sql`
       SELECT

@@ -9,12 +9,22 @@ import { useFormStatus } from "react-dom";
 import { Product } from "@/app/lib/definitions";
 import Link from "next/link";
 import LoadingButton from "../../loading-button";
+import { QueryResultRow } from "@vercel/postgres";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
 export default function EditForm({
   product,
   id,
+  categories,
 }: {
   product: Product;
   id: string;
+  categories: QueryResultRow[];
 }) {
   const initialState = {
     message: "",
@@ -23,6 +33,7 @@ export default function EditForm({
       description: [],
       prix_unitaire: [],
       quantite: [],
+      categorie_id: [],
     },
   };
   const UpdateProductsWithId = UpdateProducts.bind(null, id);
@@ -98,6 +109,42 @@ export default function EditForm({
               <div id="description-error" aria-live="polite" aria-atomic="true">
                 {state.errors?.nom_produit &&
                   state.errors.nom_produit.map((error: string) => (
+                    <p className="mt-2 text-sm text-red-500" key={error}>
+                      {error}
+                    </p>
+                  ))}
+              </div>
+            </div>
+            <div className="sm:col-span-4 flex-1">
+              <Label htmlFor="categorie_id">Categories</Label>
+              <Select name="categorie_id" defaultValue={`${`${product.id_categorie}`}`}>
+                <SelectTrigger>
+                  <SelectValue
+                    aria-describedby="categorie_id-error"
+                    placeholder="Selectionner une categorie"
+                    id="categorie_id"
+                  />
+                </SelectTrigger>
+                <SelectContent>
+                  {categories.map((categorie, key) => {
+                    return (
+                      <SelectItem
+                        key={`${key} ${categorie.id_categorie}`}
+                        value={`${categorie.id_categorie}`}
+                      >
+                        {categorie.nom}
+                      </SelectItem>
+                    );
+                  })}
+                </SelectContent>
+              </Select>
+              <div
+                id="categorie_id-error"
+                aria-live="polite"
+                aria-atomic="true"
+              >
+                {state.errors?.categorie_id &&
+                  state.errors.categorie_id.map((error: string) => (
                     <p className="mt-2 text-sm text-red-500" key={error}>
                       {error}
                     </p>

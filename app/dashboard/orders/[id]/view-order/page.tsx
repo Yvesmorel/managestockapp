@@ -15,7 +15,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         <h1 className="text-2xl font-bold mb-6 text-[#1e7376]">
           Details de la commande
         </h1>
-        <div className="bg-white rounded-lg shadow-md p-6 space-y-4">
+        <div className="bg-white rounded-lg greenShadow p-6 space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
               <p className="text-muted-foreground">
@@ -71,7 +71,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
         {supplier.list_produit.map((product: any, key: any) => {
           return (
-            <div className="bg-white rounded-lg shadow-md p-6 space-y-4">
+            <div className="bg-white rounded-lg greenShadow p-6 space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <p className="text-muted-foreground">Nom</p>

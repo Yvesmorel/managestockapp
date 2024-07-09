@@ -10,6 +10,7 @@ export type Product = {
   description?: string;
   prix_unitaire?: string;
   quantite?: string;
+  id_categorie?:string
 };
 export type productListType = {
   product: string;

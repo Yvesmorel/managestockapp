@@ -43,7 +43,7 @@ export default async function Page({
         </Link>
       </div>
       <Search placeholder="Rechercher une demande..." />
-      <div className="border rounded-lg overflow-hidden">
+      <div className="border-none greenShadow rounded-lg overflow-hidden">
         <Suspense fallback={<RequestsTableSkeleton />}>
           <RequestTable query={query} currentPage={currentPage} />
         </Suspense>

@@ -4,12 +4,12 @@ import { NetworkStatusAlert } from "@/components/ui/network-status";
 function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div style={{overflow:"hidden"}} className="flex w-screen h-screen">
-      <div className="w-auto  border">
+      <div className="w-auto  ">
         <SideNav />
       </div>
-      <div className="flex-1 flex flex-col h-full">
+      <div className="flex-1 flex flex-col h-full bg-white">
         <ProfilBar />
-        <div className="w-full h-full overflow-y-scroll bg-[#f8fafc]">{children}</div>
+        <div className="w-full h-full overflow-y-scroll rounded bg-[#f4f8f8] customscrollBar">{children}</div>
       </div>
       <NetworkStatusAlert/>
     </div>

@@ -59,12 +59,12 @@ export default function CreateRequest({
         </div>
         <div className="grid grid-cols-1 gap-4">
           <div className="space-y-2">
-            <Label htmlFor="libelle_demande">Demande</Label>
+            <Label htmlFor="libelle_demande">Libellé de la demande</Label>
             <Textarea
               aria-describedby="libelle_demande-error"
               required
               id="libelle_demande"
-              placeholder="Entrez votre demande"
+              placeholder="Entrez le libellé de la demande"
               name="libelle_demande"
             />
             <div
@@ -82,13 +82,13 @@ export default function CreateRequest({
           </div>
         </div>
         <div className="space-y-2">
-          <Label htmlFor="nom_departement">Département</Label>
+          <Label htmlFor="nom_departement">Département de l'employé</Label>
           <Select name="nom_departement">
             <SelectTrigger>
               <SelectValue
                 aria-describedby="nom_departement-error"
                 defaultValue={departement[0].id}
-                placeholder="Sélectionnez un département"
+                placeholder="Sélectionnez le departement de l'employé"
                 id="nom_departement"
               />
             </SelectTrigger>
@@ -113,11 +113,11 @@ export default function CreateRequest({
         </div>
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label htmlFor="nom_employe">Prénom</Label>
+            <Label htmlFor="nom_employe">Prénom de l'employé</Label>
             <Input
               aria-describedby="nom_employe-error"
               id="nom_employe"
-              placeholder="Entrez votre prénom"
+              placeholder="Entrez le prénom de l'employé"
               name="nom_employe"
             />
             <div id="nom_employe-error" aria-live="polite" aria-atomic="true">
@@ -130,12 +130,12 @@ export default function CreateRequest({
             </div>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="prenom_employe">Nom</Label>
+            <Label htmlFor="prenom_employe">Nom de l'employé</Label>
             <Input
               aria-describedby="prenom_employe-error"
               required
               id="prenom_employe"
-              placeholder="Entrez votre nom"
+              placeholder="Entrez le nom de l'employé"
               name="prenom_employe"
             />
             <div
@@ -154,12 +154,12 @@ export default function CreateRequest({
         </div>
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label htmlFor="poste_employe">Poste</Label>
+            <Label htmlFor="poste_employe">Poste de l'employé</Label>
             <Input
               aria-describedby="poste_employe-error"
               required
               id="poste_employe"
-              placeholder="Entrez votre poste"
+              placeholder="Entrez le poste de l'employé"
               name="poste_employe"
             />
             <div id="poste_employe-error" aria-live="polite" aria-atomic="true">
@@ -172,12 +172,12 @@ export default function CreateRequest({
             </div>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="adresse_employe">Adresse</Label>
+            <Label htmlFor="adresse_employe">Adresse de l'employé</Label>
             <Input
               aria-describedby="adresse_employe-error"
               required
               id="adresse_employe"
-              placeholder="Entrez votre adresse"
+              placeholder="Entrez l'adresse de l'employé"
               name="adresse_employe"
             />
             <div
@@ -195,13 +195,13 @@ export default function CreateRequest({
           </div>
         </div>
         <div className="space-y-2">
-          <Label htmlFor="telephone_employe">Téléphone</Label>
+          <Label htmlFor="telephone_employe">Téléphone de l'employé</Label>
           <Input
             aria-describedby="telephone_employe-error"
             required
             id="telephone_employe"
             type="tel"
-            placeholder="Entrez votre numéro de téléphone"
+            placeholder="Entrez le numéro de téléphone de l'employé"
             name="telephone_employe"
           />
           <div
@@ -289,7 +289,7 @@ function ProductManagement({
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-6">Product Management</h1>
+      <h1 className="text-2xl font-bold mb-6">Liste des produits</h1>
       <div className="grid grid-cols-1 gap-4 mb-6">
         <div className="space-y-2">
           <label

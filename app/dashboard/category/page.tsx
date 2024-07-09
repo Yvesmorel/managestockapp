@@ -22,7 +22,7 @@ export default async function Page({
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
+    <div className="w-full max-w-6xl mx-auto px-4 py-8 md:py-12">
       <h1 className="text-2xl font-bold mb-6">Categories de produits</h1>
       <Search placeholder="Rechercher une categorie..." />
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -40,7 +40,7 @@ async function CategoryCard({ category }: { category: QueryResultRow }) {
   );
   return (
     <Link href={`/dashboard/products?page=1&query=${category.nom}`}>
-      <div className="bg-white rounded-lg shadow-md cursor-pointer overflow-hidden   hover:text-[#1e7376]">
+      <div className="bg-white rounded-lg greenShadow cursor-pointer overflow-hidden   hover:text-[#1e7376] bottomToTop">
         <div className="p-6">
           <h2 className="text-lg font-semibold mb-2">{category.nom}</h2>
           <p className="text-gray-500 text-sm">

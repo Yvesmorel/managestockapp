@@ -312,7 +312,7 @@ function ProductManagement({
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-6">Product Management</h1>
+      <h1 className="text-2xl font-bold mb-6">Liste des produits</h1>
       <div className="grid grid-cols-1 gap-4 mb-6">
         <div className="space-y-2">
           <label
@@ -403,7 +403,7 @@ function ProductManagement({
                 return (
                   <SelectItem
                     key={`${key} ${categorie.id_categorie}`}
-                    value={`${categorie.id_categorie}`}
+                    value={`${categorie.id_categorie} ${categorie.nom}`}
                   >
                     {categorie.nom}
                   </SelectItem>
@@ -435,9 +435,10 @@ function ProductManagement({
           {productList.map((item, index) => (
             <li key={index} className="flex justify-between items-center mb-4">
               <span>
-                {item.product} - Quantité: {item.quantity} - Description:{" "}
-                {item.description} - Prix: {item.price}€ - Catégorie:{" "}
-                {item.category}
+             
+                {item.product} - <b>Quantité:</b> {item.quantity} - <b>Description:</b>{" "}
+                {item.description} - <b>Prix:</b> {item.price}€ - <b>Catégorie:</b>{" "}
+                {item.category.split(' ')[1]}
               </span>
               <Button
                 type="button"
