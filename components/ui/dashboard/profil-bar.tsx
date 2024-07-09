@@ -10,7 +10,7 @@ export default function ProfilBar() {
           <AvatarImage src="/user.png" sizes="10" />
           {/* <AvatarFallback>GS</AvatarFallback> */}
         </Avatar>
-        <div className="text-sm font-thin text-foreground">
+        <div className="text-sm font-light text-foreground">
           v-1.0.0~admin
         </div>
       </div>
@@ -21,7 +21,7 @@ export default function ProfilBar() {
           await signOut();
         }}
       >
-        <Button variant="ghost" size="sm" className="hover:bg-[#e8f1f1] hover:text-[#1e7376]">
+        <Button variant="ghost" size="sm" className="hover:bg-[#e8f1f1] hover:text-[#1e7376] mr-1">
         <LogOutIcon className="mr-2 h-4 w-4" />
           Se deconnecter
         </Button>

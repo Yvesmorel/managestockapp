@@ -59,7 +59,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
           <div className="flex justify-end">
             <Link href="/dashboard/requests">
-              <Button variant="secondary" className="">
+              <Button variant="secondary" className="bg-[#e8f1f1] text-[#1e7376]">
                 Retour
               </Button>
             </Link>

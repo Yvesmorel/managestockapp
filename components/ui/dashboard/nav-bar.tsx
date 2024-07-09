@@ -47,7 +47,7 @@ const NavBar = () => {
                   "bg-[#e8f1f1] text-[#1e7376] font-medium":
                     currentPathname.includes(itemLink),
                 },{
-                  "font-thin":
+                  "font-light":
                     !currentPathname.includes(itemLink),
                 }
               )}
