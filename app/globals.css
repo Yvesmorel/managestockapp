@@ -94,3 +94,39 @@
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#f4f8f8",endColorstr="#ffffff",GradientType=1);
   }
   
+.bottomToTop {
+  /* // animation-duration: .8; */
+  transform-origin: 0% 100%;
+  animation: bottomToTop-animation 0.8s ease 0s 0.7 normal both running;
+}
+
+@keyframes bottomToTop-animation {
+  0% {
+    transform: translateY(7px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
+
+.topToBottom {
+  /* animation-duration: .8; */
+
+  transform-origin: 0% 100%;
+  animation: topToBottom-animation 0.8s ease 0s 0.7 normal both running;
+}
+
+@keyframes topToBottom-animation {
+  0% {
+    transform: translateY(-7px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}

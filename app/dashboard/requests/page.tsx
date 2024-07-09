@@ -36,7 +36,7 @@ export default async function Page({
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold">Demandes</h1>
         <Link href="/dashboard/requests/create-requests">
-          <Button size="lg">
+          <Button size="lg" className="topToBottom">
             <PlusIcon className="mr-2 h-5 w-5 h-[24px] w-[24px]" />
             Ajouter une demande
           </Button>
@@ -65,7 +65,7 @@ async function RequestTable({
   const requests = await fetchFilteredRequests(query, currentPage);
 
   return (
-    <table className="min-w-full divide-y divide-gray-200">
+    <table className="min-w-full divide-y divide-gray-200 bottomToTop">
       <thead className="bg-white">
         <tr>
           {/* <th

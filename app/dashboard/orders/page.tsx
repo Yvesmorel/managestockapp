@@ -32,7 +32,7 @@ export default async function Component({
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold">Commandes</h1>
         <Link href="/dashboard/orders/create-orders">
-          <Button size="lg">
+          <Button size="lg" className="topToBottom">
             <PlusIcon className="mr-2 h-5 w-5 h-[24px] w-[24px]" />
             Ajouter une commande
           </Button>
@@ -61,7 +61,7 @@ async function OrdersTable({
   const orders = await fecthFilteredOrders(query, currentPage);
 
   return (
-    <table className="min-w-full divide-y divide-gray-200">
+    <table className="min-w-full divide-y divide-gray-200 bottomToTop">
       <thead className="bg-white">
         <tr>
           {/* <th

@@ -42,7 +42,7 @@ export default async function Page({
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold">Produits</h1>
         <Link href="/dashboard/products/create-products">
-          <Button size="lg" className="shadow">
+          <Button size="lg" className="shadow topToBottom">
             <PlusIcon className="mr-2 h-5 w-5 h-[24px] w-[24px]" />
             Ajouter un produit
           </Button>
@@ -70,7 +70,7 @@ async function ProductsTable({
 }) {
   const products = await fetchFilteredProducts(query, currentPage);
   return (
-    <Table>
+    <Table className="bottomToTop">
       <TableHeader>
         <TableRow>
           <TableHead>Nom du produit</TableHead>
