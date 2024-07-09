@@ -128,7 +128,7 @@ export default function EditForm({
           </div>
           <div className="flex justify-end gap-2 items-center">
             <Link href="/dashboard/products">
-              <Button variant="outline" size="lg">Cancel</Button>
+              <Button variant="outline" size="lg">Retour</Button>
             </Link>
             <UpdateProductButton />
           </div>

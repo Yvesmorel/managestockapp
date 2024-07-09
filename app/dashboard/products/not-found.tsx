@@ -11,7 +11,7 @@ export default function NotFound() {
         href="/dashboard/products"
         className="mt-4 rounded-md bg-black  px-4 py-2 text-sm text-white transition-colors hover:opacity-40"
       >
-        Retour
+        Actualiser
       </Link>
     </main>
   );

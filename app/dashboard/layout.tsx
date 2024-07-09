@@ -1,5 +1,6 @@
 import SideNav from "@/components/ui/dashboard/side-nav";
 import ProfilBar from "@/components/ui/dashboard/profil-bar";
+import { NetworkStatusAlert } from "@/components/ui/network-status";
 function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div style={{overflow:"hidden"}} className="flex w-screen h-screen">
@@ -10,6 +11,7 @@ function Layout({ children }: { children: React.ReactNode }) {
         <ProfilBar />
         <div className="w-full h-full overflow-y-scroll bg-[#f8fafc]">{children}</div>
       </div>
+      <NetworkStatusAlert/>
     </div>
   );
 }

@@ -8,10 +8,10 @@ export default function ProfilBar() {
       <div className="flex items-center gap-2">
         <Avatar className="h-8 w-8">
           <AvatarImage src="/placeholder-user.jpg" />
-          <AvatarFallback>JP</AvatarFallback>
+          <AvatarFallback>GS</AvatarFallback>
         </Avatar>
         <div className="text-sm font-medium text-foreground">
-          john@example.com
+          v-1.0.0admin
         </div>
       </div>
       <form

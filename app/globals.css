@@ -74,3 +74,23 @@
       @apply bg-background text-foreground;
     }
   }
+  .loginpagegradient {
+    background: rgb(244, 248, 248);
+    background: -moz-linear-gradient(
+      90deg,
+      rgba(244, 248, 248, 1) 0%,
+      rgba(255, 255, 255, 1) 61%
+    );
+    background: -webkit-linear-gradient(
+      90deg,
+      rgba(244, 248, 248, 1) 0%,
+      rgba(255, 255, 255, 1) 61%
+    );
+    background: linear-gradient(
+      90deg,
+      rgba(244, 248, 248, 1) 0%,
+      rgba(255, 255, 255, 1) 61%
+    );
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#f4f8f8",endColorstr="#ffffff",GradientType=1);
+  }
+  

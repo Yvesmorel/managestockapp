@@ -14,10 +14,15 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useFormState, useFormStatus } from "react-dom";
 import { CreateOrders } from "@/app/lib/actions";
+import { useState, useRef, Dispatch, SetStateAction } from "react";
+import { SaveProductType } from "@/app/lib/definitions";
 import { QueryResultRow } from "@vercel/postgres";
-export default function CreateOrder({products}:{
-    products:QueryResultRow[]
+export default function CreateOders({
+  categories,
+}: {
+  categories: QueryResultRow[];
 }) {
+  const [productList, setProductList] = useState<SaveProductType[]>([]);
   const initialState = {
     errors: {
       date_livraison: [],
@@ -31,15 +36,18 @@ export default function CreateOrder({products}:{
     message: "",
   };
 
-  const [state, dispatch] = useFormState(CreateOrders, initialState);
+  const [state, dispatch] = useFormState(
+    CreateOrders.bind(null, productList),
+    initialState
+  );
 
   return (
     <div className="container w-full px-4 py-12">
       <div className="space-y-4">
         <div>
-          <h1 className="text-3xl font-bold">Order Registration</h1>
+          <h1 className="text-3xl font-bold">Enregistrement de la commande</h1>
           <p className="text-muted-foreground">
-            Please fill out the form to record your order details.
+          Veuillez remplir le formulaire pour enregistrer les détails de votre commande.
           </p>
         </div>
         <form
@@ -47,7 +55,7 @@ export default function CreateOrder({products}:{
           action={dispatch}
         >
           <div className="grid gap-2">
-            <Label htmlFor="order-date">Order Date</Label>
+            <Label htmlFor="order-date">Date de commande</Label>
             <Input
               required
               type="date"
@@ -69,7 +77,7 @@ export default function CreateOrder({products}:{
             </div>
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="delivery-number">Delivery Goods Number</Label>
+            <Label htmlFor="delivery-number">Numéro de bon de livraison</Label>
             <Input
               required
               type="text"
@@ -91,19 +99,21 @@ export default function CreateOrder({products}:{
             </div>
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="order-status">Order Status</Label>
+            <Label htmlFor="order-status">Statut de la commande</Label>
             <Select
               required
               name="statut_commande"
               aria-describedby="statut_commande-error"
             >
               <SelectTrigger>
-                <SelectValue id="order-status" placeholder="Select status" />
+                <SelectValue
+                  id="order-status"
+                  placeholder="Sélectionnez le statut"
+                />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="pending">Pending</SelectItem>
-                <SelectItem value="shipped">Shipped</SelectItem>
-                <SelectItem value="delivered">Delivered</SelectItem>
+                <SelectItem value="pending">En attente</SelectItem>
+                <SelectItem value="delivered">Livré</SelectItem>
               </SelectContent>
             </Select>
             <div
@@ -120,7 +130,7 @@ export default function CreateOrder({products}:{
             </div>
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="last-name">Last Name</Label>
+            <Label htmlFor="last-name">Nom</Label>
             <Input
               required
               type="text"
@@ -142,7 +152,7 @@ export default function CreateOrder({products}:{
             </div>
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="first-name">First Name</Label>
+            <Label htmlFor="first-name">Prénom</Label>
             <Input
               required
               type="text"
@@ -186,7 +196,7 @@ export default function CreateOrder({products}:{
             </div>
           </div>
           <div className="col-span-2 grid gap-2">
-            <Label htmlFor="supplier-address">Supplier Address</Label>
+            <Label htmlFor="supplier-address">Adresse du fournisseur</Label>
             <Textarea
               required
               id="supplier-address"
@@ -207,25 +217,236 @@ export default function CreateOrder({products}:{
                 ))}
             </div>
           </div>
+
+          <div className="col-span-4">
+            <ProductManagement
+              productList={productList}
+              setProductList={setProductList}
+              categories={categories}
+            />
+          </div>
+
           {state.message && (
             <p className="mt-2 text-sm text-red-500">{state.message}</p>
           )}
-          <div className="flex justify-end gap-2">
+
+          <div className="flex col-span-4 justify-end gap-2">
             <Link href="/dashboard/orders">
               <Button variant="secondary">Cancel</Button>
             </Link>
-            <CreateOrdersButton />
+            <CreateOrdersButton productList={productList} />
           </div>
         </form>
       </div>
     </div>
   );
 }
-function CreateOrdersButton() {
+function CreateOrdersButton({
+  productList,
+}: {
+  productList: SaveProductType[];
+}) {
   const { pending } = useFormStatus();
   return (
-    <Button type="submit" disabled={pending}>
-      Submit Order
+    <Button type="submit" disabled={pending || productList.length === 0}>
+      Enregistrer la commande
     </Button>
+  );
+}
+// Assurez-vous de bien importer vos composants Input et Button
+
+function ProductManagement({
+  productList,
+  setProductList,
+  categories,
+}: {
+  productList: SaveProductType[];
+  setProductList: Dispatch<SetStateAction<SaveProductType[]>>;
+  categories: QueryResultRow[];
+}) {
+  const productRef = useRef<HTMLInputElement>(null);
+  const quantityRef = useRef<HTMLInputElement>(null);
+  const descriptionRef = useRef<HTMLInputElement>(null);
+  const priceRef = useRef<HTMLInputElement>(null);
+  const [category, setCategory] = useState("");
+  const handleAddProduct = () => {
+    const product = productRef.current?.value;
+    const quantity = quantityRef.current?.value;
+    const description = descriptionRef.current?.value;
+    const price = priceRef.current?.value;
+
+    if (
+      product &&
+      quantity &&
+      Number(quantity) > 0 &&
+      description &&
+      price &&
+      Number(price) > 0 &&
+      category
+    ) {
+      setProductList([
+        ...productList,
+        {
+          product,
+          quantity: Number(quantity),
+          description,
+          price: Number(price),
+          category,
+        },
+      ]);
+      if (productRef.current) productRef.current.value = "";
+      if (quantityRef.current) quantityRef.current.value = "1";
+      if (descriptionRef.current) descriptionRef.current.value = "";
+      if (priceRef.current) priceRef.current.value = "0";
+      if (category) setCategory("");
+    }
+  };
+
+  const handleRemoveProduct = (index: number) => {
+    const updatedList = productList.filter((_, i) => i !== index);
+    setProductList(updatedList);
+  };
+
+  return (
+    <div className="container mx-auto p-4">
+      <h1 className="text-2xl font-bold mb-6">Product Management</h1>
+      <div className="grid grid-cols-1 gap-4 mb-6">
+        <div className="space-y-2">
+          <label
+            htmlFor="product-name"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Produit
+          </label>
+          <Input
+            id="product-name"
+            type="text"
+            className="form-input mt-1 block w-full"
+            placeholder="Produit"
+            ref={productRef}
+          />
+        </div>
+        <div className="space-y-2">
+          <label
+            htmlFor="quantity_input"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Quantité
+          </label>
+          <Input
+            id="quantity_input"
+            type="number"
+            className="form-input mt-1 block w-full"
+            placeholder="Quantité"
+            ref={quantityRef}
+            defaultValue={1}
+            min={1}
+          />
+        </div>
+        <div className="space-y-2">
+          <label
+            htmlFor="description_input"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Description
+          </label>
+          <Input
+            id="description_input"
+            type="text"
+            className="form-input mt-1 block w-full"
+            placeholder="Description"
+            ref={descriptionRef}
+          />
+        </div>
+        <div className="space-y-2">
+          <label
+            htmlFor="price_input"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Prix Unitaire
+          </label>
+          <Input
+            id="price_input"
+            type="number"
+            className="form-input mt-1 block w-full"
+            placeholder="Prix Unitaire"
+            ref={priceRef}
+            defaultValue={0}
+            min={0}
+          />
+        </div>
+        <div className="space-y-2">
+          <label
+            htmlFor="category_input"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Catégorie
+          </label>
+          <Select
+            name="category_input"
+            value={category}
+            onValueChange={(value) => setCategory(value)}
+          >
+            <SelectTrigger>
+              <SelectValue
+                aria-describedby="category_input-error"
+                defaultValue={categories[0].id}
+                placeholder="Select categories"
+                id="category_input"
+              />
+            </SelectTrigger>
+            <SelectContent>
+              {categories.map((categorie, key) => {
+                return (
+                  <SelectItem
+                    key={`${key} ${categorie.id_categorie}`}
+                    value={`${categorie.id_categorie}`}
+                  >
+                    {categorie.nom}
+                  </SelectItem>
+                );
+              })}
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+      <div className="flex gap-2 mb-6">
+        <button
+          type="button"
+          className="bg-[#1e7376] text-[#e8f1f1] text-white px-4 py-2 rounded-md hover:opacity-40 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+          onClick={handleAddProduct}
+        >
+          Ajouter
+        </button>
+        <button
+          type="button"
+          className="bg-[#e8f1f1] text-[#1e7376]  px-4 py-2 rounded-md hover:opacity-40 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+          onClick={() => setProductList([])}
+        >
+          Supprimer tout
+        </button>
+      </div>
+      <div>
+        <h2 className="text-xl font-bold mb-4">Liste des produits</h2>
+        <ul className="list-disc list-inside">
+          {productList.map((item, index) => (
+            <li key={index} className="flex justify-between items-center mb-4">
+              <span>
+                {item.product} - Quantité: {item.quantity} - Description:{" "}
+                {item.description} - Prix: {item.price}€ - Catégorie:{" "}
+                {item.category}
+              </span>
+              <Button
+                type="button"
+                className="bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                onClick={() => handleRemoveProduct(index)}
+              >
+                Supprimer
+              </Button>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
   );
 }

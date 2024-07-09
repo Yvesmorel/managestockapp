@@ -14,4 +14,13 @@ export type Product = {
 export type productListType = {
   product: string;
   quantity: number;
+  totalQuantity:number
 }[];
+
+export interface SaveProductType {
+  product: string;
+  quantity: number;
+  description: string;
+  price: number;
+  category: string;
+}

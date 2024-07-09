@@ -43,7 +43,7 @@ export default function CreateRequest({
     message: "",
   };
   const [productList, setProductList] = useState<
-    { product: string; quantity: number }[]
+    { product: string; quantity: number; totalQuantity: number }[]
   >([]);
   const [state, dispatch] = useFormState(
     CreateRequests.bind(null, productList),
@@ -54,16 +54,16 @@ export default function CreateRequest({
     <div className="w-full h-full">
       <form className="grid gap-6 p-6 sm:p-8 md:p-10" action={dispatch}>
         <div className="space-y-2">
-          <h2 className="text-2xl font-bold">Create request</h2>
+          <h2 className="text-2xl font-bold">Créer une demande</h2>
         </div>
         <div className="grid grid-cols-1 gap-4">
           <div className="space-y-2">
-            <Label htmlFor="libelle_demande">Request</Label>
+            <Label htmlFor="libelle_demande">Demande</Label>
             <Textarea
               aria-describedby="libelle_demande-error"
               required
               id="libelle_demande"
-              placeholder="Enter your request"
+              placeholder="Entrez votre demande"
               name="libelle_demande"
             />
             <div
@@ -81,13 +81,13 @@ export default function CreateRequest({
           </div>
         </div>
         <div className="space-y-2">
-          <Label htmlFor="nom_departement">Department</Label>
+          <Label htmlFor="nom_departement">Département</Label>
           <Select name="nom_departement">
             <SelectTrigger>
               <SelectValue
                 aria-describedby="nom_departement-error"
                 defaultValue={departement[0].id}
-                placeholder="Select department"
+                placeholder="Sélectionnez un département"
                 id="nom_departement"
               />
             </SelectTrigger>
@@ -112,11 +112,11 @@ export default function CreateRequest({
         </div>
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label htmlFor="nom_employe">First Name</Label>
+            <Label htmlFor="nom_employe">Prénom</Label>
             <Input
               aria-describedby="nom_employe-error"
               id="nom_employe"
-              placeholder="Enter your first name"
+              placeholder="Entrez votre prénom"
               name="nom_employe"
             />
             <div id="nom_employe-error" aria-live="polite" aria-atomic="true">
@@ -129,12 +129,12 @@ export default function CreateRequest({
             </div>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="prenom_employe">Last Name</Label>
+            <Label htmlFor="prenom_employe">Nom</Label>
             <Input
               aria-describedby="prenom_employe-error"
               required
               id="prenom_employe"
-              placeholder="Enter your last name"
+              placeholder="Entrez votre nom"
               name="prenom_employe"
             />
             <div
@@ -153,12 +153,12 @@ export default function CreateRequest({
         </div>
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label htmlFor="poste_employe">Position</Label>
+            <Label htmlFor="poste_employe">Poste</Label>
             <Input
               aria-describedby="poste_employe-error"
               required
               id="poste_employe"
-              placeholder="Enter your position"
+              placeholder="Entrez votre poste"
               name="poste_employe"
             />
             <div id="poste_employe-error" aria-live="polite" aria-atomic="true">
@@ -171,12 +171,12 @@ export default function CreateRequest({
             </div>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="adresse_employe">Address</Label>
+            <Label htmlFor="adresse_employe">Adresse</Label>
             <Input
               aria-describedby="adresse_employe-error"
               required
               id="adresse_employe"
-              placeholder="Enter your address"
+              placeholder="Entrez votre adresse"
               name="adresse_employe"
             />
             <div
@@ -194,24 +194,29 @@ export default function CreateRequest({
           </div>
         </div>
         <div className="space-y-2">
-          <Label htmlFor="telephone_employe">Phone</Label>
+          <Label htmlFor="telephone_employe">Téléphone</Label>
           <Input
-            aria-describedby="adresse_employe-error"
+            aria-describedby="telephone_employe-error"
             required
             id="telephone_employe"
             type="tel"
-            placeholder="Enter your phone number"
+            placeholder="Entrez votre numéro de téléphone"
             name="telephone_employe"
           />
-          <div id="adresse_employe-error" aria-live="polite" aria-atomic="true">
-            {state.errors?.adresse_employe &&
-              state.errors.adresse_employe.map((error: string) => (
+          <div
+            id="telephone_employe-error"
+            aria-live="polite"
+            aria-atomic="true"
+          >
+            {state.errors?.telephone_employe &&
+              state.errors.telephone_employe.map((error: string) => (
                 <p className="mt-2 text-sm text-red-500" key={error}>
                   {error}
                 </p>
               ))}
           </div>
         </div>
+
         <ProductManagement
           productList={productList}
           setProductList={setProductList}
@@ -219,9 +224,9 @@ export default function CreateRequest({
         />
         <div className="flex justify-end gap-2">
           <Link href="/dashboard/requests">
-            <Button variant="outline">Cancel</Button>
+            <Button variant="outline">Retour</Button>
           </Link>
-          <CreateRequestButton />
+          <CreateRequestButton productList={productList} />
         </div>
         {state.message && (
           <p className="mt-2 text-sm text-red-500">{state.message}</p>
@@ -230,11 +235,19 @@ export default function CreateRequest({
     </div>
   );
 }
-function CreateRequestButton() {
+function CreateRequestButton({
+  productList,
+}: {
+  productList: productListType;
+}) {
   const { pending } = useFormStatus();
   return (
-    <Button type="submit" aria-disabled={pending} disabled={pending}>
-      Submit Request
+    <Button
+      type="submit"
+      aria-disabled={pending}
+      disabled={pending || productList.length === 0}
+    >
+      Ajouter la demande
     </Button>
   );
 }
@@ -253,7 +266,14 @@ function ProductManagement({
 
   const handleAddProduct = () => {
     if (selectedProduct && quantity > 0) {
-      setProductList([...productList, { product: selectedProduct, quantity }]);
+      setProductList([
+        ...productList,
+        {
+          product: selectedProduct,
+          quantity,
+          totalQuantity: productQuantity(products, selectedProduct),
+        },
+      ]);
       setSelectedProduct("");
       setQuantity(1);
     }
@@ -286,7 +306,10 @@ function ProductManagement({
             <SelectContent>
               {products.map((product, key) => {
                 return (
-                  <SelectItem key={key} value={`${product.nom_produit}`}>
+                  <SelectItem
+                    key={key}
+                    value={`${product.id} ${product.nom_produit}`}
+                  >
                     {`${product.nom_produit}`}
                   </SelectItem>
                 );
@@ -309,7 +332,7 @@ function ProductManagement({
             placeholder="Quantité"
             value={quantity}
             min={1}
-            // max={productQuantity(products, selectedProduct)}
+            max={productQuantity(products, selectedProduct) || 1}
             onChange={(e) => setQuantity(Number(e.target.value))}
           />
         </div>
@@ -336,7 +359,7 @@ function ProductManagement({
           {productList.map((item, index) => (
             <li key={index} className="flex justify-between items-center mb-4">
               <span>
-                {item.product} - Quantité: {item.quantity}
+                {item.product.split(" ")[1]} - Quantité: {item.quantity}
               </span>
               <Button
                 type="button"

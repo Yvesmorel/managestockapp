@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/table";
 import Link from "next/link";
 import { EyeIcon, PlusIcon } from "lucide-react";
+import { notFound } from "next/navigation";
 export default async function Page({
   searchParams,
 }: {
@@ -24,20 +25,24 @@ export default async function Page({
 }) {
   const query = searchParams?.query || "";
   const currentPage = Number(searchParams?.page) || 1;
-  const totalPages = await fetchRequestsPages(query);
-
+  let totalPages;
+  try {
+    totalPages = await fetchRequestsPages(query);
+  } catch (error) {
+    notFound();
+  }
   return (
     <div className="w-full max-w-6xl mx-auto px-4 py-8 md:py-12">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">Requests</h1>
+        <h1 className="text-2xl font-bold">Demandes</h1>
         <Link href="/dashboard/requests/create-requests">
           <Button size="lg">
             <PlusIcon className="mr-2 h-5 w-5 h-[24px] w-[24px]" />
-            Create Request
+            Ajouter une demande
           </Button>
         </Link>
       </div>
-      <Search placeholder="Search requests..." />
+      <Search placeholder="Rechercher une demande..." />
       <div className="border rounded-lg overflow-hidden">
         <Suspense fallback={<RequestsTableSkeleton />}>
           <RequestTable query={query} currentPage={currentPage} />
@@ -61,19 +66,19 @@ async function RequestTable({
 
   return (
     <table className="min-w-full divide-y divide-gray-200">
-      <thead className="bg-gray-50">
+      <thead className="bg-white">
         <tr>
-          <th
+          {/* <th
             scope="col"
             className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
           >
             Date
-          </th>
+          </th> */}
           <th
             scope="col"
             className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
           >
-            Request
+            Demande
           </th>
           <th
             scope="col"
@@ -97,7 +102,7 @@ async function RequestTable({
             scope="col"
             className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-right"
           >
-            Edit
+            Actions
           </th>
           {/* <th
             scope="col"
@@ -123,11 +128,11 @@ async function RequestTable({
         {requests.map((request, key) => {
           return (
             <tr key={key}>
-              <td className="px-6 py-4 whitespace-nowrap">
+              {/* <td className="px-6 py-4 whitespace-nowrap">
                 <div className="text-sm text-gray-900">
                   {new Date(request.date).toLocaleDateString()}
                 </div>
-              </td>
+              </td> */}
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="text-sm text-gray-900">{request.libelle}</div>
               </td>

@@ -116,7 +116,7 @@ export default function CreateProduct({
                   <SelectValue
                     aria-describedby="categorie_id-error"
                     defaultValue={categories[0].id}
-                    placeholder="Select department"
+                    placeholder="Selectionner une categorie"
                     id="categorie_id"
                   />
                 </SelectTrigger>
@@ -171,7 +171,7 @@ export default function CreateProduct({
           <div className="flex justify-end gap-2 items-center">
             <Link href="/dashboard/products">
               <Button size="lg" variant="outline">
-                Cancel
+                Retour
               </Button>
             </Link>
             <CreateProductButton />

@@ -38,7 +38,19 @@ export const productQuantity = (
   nom_produit: string
 ) => {
   return (
-    products.find((product) => product.nom_produit === parseInt(nom_produit))?.quantite ||
-    0
+    products.find(
+      (product) => product.id === parseInt(nom_produit.split(" ")[0])
+    )?.quantite || 0
   );
+};
+
+export const getStatusClasses = (status:string) => {
+  switch (status) {
+    case "pending":
+      return "bg-yellow-100 text-yellow-800";
+    case "delivered":
+      return "bg-green-100 text-green-800";
+    default:
+      return "bg-gray-100 text-gray-800";
+  }
 };

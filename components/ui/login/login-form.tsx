@@ -14,47 +14,59 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useFormState, useFormStatus } from "react-dom";
 import { authenticate } from "@/app/lib/actions";
+import { CircleStackIcon } from "@heroicons/react/16/solid";
+import Image from "next/image";
 const LoginForm = () => {
   const [errorMessage, dispatch] = useFormState(authenticate, undefined);
   return (
-    <form className="space-y-4" action={dispatch}>
-      <Card className="w-full max-w-md">
+    <form className=" flex shadow-lg  p-1 rounded" action={dispatch}>
+      <div className="w-100 h-auto flex justify-center items-center bg-white">
+      <Image src="./login-illust.svg" alt="illustration" width={300} height={400}/>
+      </div>
+      <Card className="w-full h-full max-w-md border-none shadow-none bg-[#e8f1f178]">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl">Welcome Back</CardTitle>
+          <div className="flex gap-2 font-bold">
+            <CircleStackIcon className="h-[22px] w-[22px] text-[#1e7376]" />
+          <p>G-</p><p className="text-[#1e7376]">STOCK</p>
+          </div>
+          <CardTitle className="text-2xl">Bienvenue</CardTitle>
           <CardDescription>
-            Enter your email and password to sign in to your account.
+            Entrez votre email et mot de passe pour vous connecter à votre
+            compte.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input
+              className="border-none"
               id="email"
               type="email"
               name="email"
-              placeholder="Enter your email address"
+              placeholder="Entrez votre adresse email"
               required
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password">Mot de passe</Label>
             <Input
+               className="border-none"
               id="password"
               type="password"
               name="password"
-              placeholder="Enter password"
+              placeholder="Entrez votre mot de passe"
               required
             />
           </div>
         </CardContent>
         <CardFooter className="flex flex-col flex-end">
-          <Link
-            href="#"
-            className="mt-2 text-sm text-gray-500 hover:underline"
-            prefetch={false}
-          >
-            Don't have an account? Register
-          </Link>
+          {/* <Link
+      href="#"
+      className="mt-2 text-sm text-gray-500 hover:underline"
+      prefetch={false}
+    >
+      Vous n'avez pas de compte? Inscrivez-vous
+    </Link> */}
           <LoginButton />
           <div
             className="flex h-8 items-end space-x-1"

@@ -7,6 +7,7 @@ export async function fetchFilteredProducts(
   query: string,
   currentPage: number
 ) {
+  noStore();
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
   try {
@@ -31,6 +32,7 @@ export async function fetchFilteredProducts(
 }
 
 export async function fetchProductsPages(query: string) {
+  noStore();
   try {
     const countQuery = await sql`SELECT COUNT(*)
         FROM produits
@@ -53,6 +55,7 @@ export async function fetchFilteredRequests(
   query: string,
   currentPage: number
 ) {
+  noStore();
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
   try {
@@ -80,6 +83,7 @@ export async function fetchFilteredRequests(
 }
 
 export async function fetchRequestsPages(query: string): Promise<number> {
+  noStore();
   try {
     // Requête SQL pour compter le nombre d'enregistrements correspondant à la requête
     const countQuery = await sql`
@@ -141,6 +145,7 @@ export async function fetchProductById(id: string) {
   }
 }
 export async function fetchDepartement() {
+  noStore();
   try {
     const data = await sql`
     SELECT * FROM departement;
@@ -153,6 +158,7 @@ export async function fetchDepartement() {
   }
 }
 export async function fetchCategories() {
+  noStore();
   try {
     const data = await sql`
     SELECT * FROM categorie;
@@ -179,6 +185,7 @@ export async function fetchProducts() {
 }
 
 export async function fetchSupplierById(orderId: any) {
+  noStore();
   try {
     const data = await sql`
     SELECT * FROM commande c JOIN fournisseur f ON c.id = f.id_commande WHERE c.id =${orderId};
@@ -191,6 +198,7 @@ export async function fetchSupplierById(orderId: any) {
 }
 
 export async function fetchRequestById(requestId: any) {
+  noStore();
   try {
     const data = await sql`
     SELECT * FROM demande WHERE demande.id =${requestId};
@@ -203,6 +211,7 @@ export async function fetchRequestById(requestId: any) {
 }
 
 export async function fecthFilteredOrders(query: string, currentPage: number) {
+  noStore();
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
   try {
     const data = await sql`
@@ -222,6 +231,7 @@ export async function fecthFilteredOrders(query: string, currentPage: number) {
 }
 
 export async function fetchOrdersPage(query: string) {
+  noStore();
   try {
     const data = sql`
       SELECT COUNT(*)

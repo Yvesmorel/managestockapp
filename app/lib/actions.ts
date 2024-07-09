@@ -5,78 +5,76 @@ import { z } from "zod";
 import { sql } from "@vercel/postgres";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { productListType } from "./definitions";
+import { productListType, SaveProductType } from "./definitions";
 
-// ...
 const CreateOrdersFormShema = z.object({
   date_livraison: z.string({
-    required_error: "Veuillez entrer le libelle du departement",
+    required_error: "Veuillez entrer la date de livraison",
   }),
   num_bon_livraison: z.string({
-    required_error: "Veuillez entrer le libelle du departement",
+    required_error: "Veuillez entrer le numéro de bon de livraison",
   }),
   statut_commande: z.string({
-    required_error: "Veuillez Selectionner le nom du departement",
+    required_error: "Veuillez sélectionner le statut de la commande",
   }),
   nom_fournisseur: z.string({
-    required_error: "Veuillez entrer le nom de l'employé",
+    required_error: "Veuillez entrer le nom du fournisseur",
   }),
   prenom_fournisseur: z.string({
-    required_error: "Veuillez entrer prenom de l'employé",
+    required_error: "Veuillez entrer le prénom du fournisseur",
   }),
   adresse_fournisseur: z.string({
-    required_error: "Veuillez entrez l'adresse de l'employé",
+    required_error: "Veuillez entrer l'adresse du fournisseur",
   }),
   contact_fournisseur: z.string({
-    required_error: "Veuillez entrez le numero de telephone de l'employé",
+    required_error: "Veuillez entrer le numéro de contact du fournisseur",
   }),
 });
+
 
 const CreateRequestFormShema = z.object({
   id: z.string(),
   libelle_demande: z.string({
-    required_error: "Veuillez entrer le libelle du departement",
+    required_error: "Veuillez entrer le libellé de la demande",
   }),
   nom_departement: z.string({
-    required_error: "Veuillez Selectionner le nom du departement",
+    required_error: "Veuillez sélectionner le nom du département",
   }),
   nom_employe: z.string({
     required_error: "Veuillez entrer le nom de l'employé",
   }),
   prenom_employe: z.string({
-    required_error: "Veuillez entrer prenom de l'employé",
+    required_error: "Veuillez entrer le prénom de l'employé",
   }),
   poste_employe: z.string({
-    required_error: "Veuillez Selectionner le poste de l'employé",
+    required_error: "Veuillez sélectionner le poste de l'employé",
   }),
   adresse_employe: z.string({
-    required_error: "Veuillez entrez l'adresse de l'employé",
+    required_error: "Veuillez entrer l'adresse de l'employé",
   }),
   telephone_employe: z.string({
-    required_error: "Veuillez entrez le numero de telephone de l'employé",
+    required_error: "Veuillez entrer le numéro de téléphone de l'employé",
   }),
 });
-
 const CreateProductsFormSchema = z.object({
   id: z.string(),
-
   nom_produit: z.string({
-    required_error: "Entrez le nom du produit s'il vous plait ",
+    required_error: "Veuillez entrer le nom du produit",
   }),
   description: z.string({
-    required_error: "Entrez le nom du produit s'il vous plait ",
+    required_error: "Veuillez entrer la description du produit",
   }),
   prix_unitaire: z.string({
-    required_error: " Entrez le prix du produit",
-    invalid_type_error: "Entrez un montant s'il vous plait",
+    required_error: "Veuillez entrer le prix unitaire du produit",
+    invalid_type_error: "Veuillez entrer un montant valide pour le prix unitaire",
   }),
   quantite: z.string({
-    required_error: " Entrez le prix du produit",
-    invalid_type_error: "Entrez un montant s'il vous plait",
+    required_error: "Veuillez entrer la quantité du produit",
+    invalid_type_error: "Veuillez entrer une quantité valide pour le produit",
   }),
   userid: z.string(),
   categorie_id: z.string({
-    required_error: "Choisissez la categorie du produit s'il vous plait ",
+    required_error: "Veuillez sélectionner la catégorie du produit",
   }),
   date: z.string(),
 });
@@ -227,11 +225,12 @@ export async function CreateRequests(
   const productArrayString = productList
     .map(
       (product) =>
-        `{"produit":${product.product}, "quantite": ${product.quantity}}`
+        `{"produit":"${product.product}", "quantite": ${product.quantity},"finalQuantity":1}`
     )
     .join(", ");
   const product = `[${productArrayString}]`;
   console.log(product);
+
   try {
     await sql`
     INSERT INTO demande (
@@ -248,7 +247,10 @@ export async function CreateRequests(
       null,
       ${product}
     );
-  `;
+
+
+`;
+    await updateProductQuantities(productList);
   } catch (error: any) {
     return { message: error.message };
   }
@@ -256,7 +258,46 @@ export async function CreateRequests(
   redirect("/dashboard/requests");
 }
 
-export async function CreateOrders(prevState: OrdersState, formData: FormData) {
+async function updateProductQuantities(products: productListType) {
+  for (const product of products) {
+    const { product: produit, quantity, totalQuantity } = product;
+    const finalQuantity = totalQuantity - quantity;
+    console.log(finalQuantity);
+    await sql`
+      UPDATE produits
+      SET quantite = ${finalQuantity}
+      WHERE id =${produit.split(" ")[0]}
+    `;
+  }
+}
+async function saveDeliveredProduct(products: SaveProductType[]) {
+  const date = new Date().toISOString().split("T")[0];
+  for (const product of products) {
+    const {
+      price,
+      product: nom_produit,
+      description,
+      quantity,
+      category,
+    } = product;
+    console.log( price,
+     nom_produit,
+      description,
+      quantity,
+      category);
+    
+
+    await sql`
+      INSERT INTO produits (nom_produit, description, prix_unitaire, quantite,createdat,userid,id_categorie) VALUES (${nom_produit}, ${description},${price},${quantity},${date},'userjsqfbqjfqh1',${category});
+    `;
+  }
+}
+
+export async function CreateOrders(
+  productList: SaveProductType[],
+  prevState: OrdersState,
+  formData: FormData
+) {
   const rawData = Object.fromEntries(formData.entries());
   console.log(rawData);
 
@@ -279,17 +320,28 @@ export async function CreateOrders(prevState: OrdersState, formData: FormData) {
     adresse_fournisseur,
   } = validatedData.data;
   const date = new Date(date_livraison) as any;
+
+  const productArrayString = productList
+    .map(
+      (product) =>
+        `{"product":"${product.product}", "quantity": ${product.quantity},"description": "${product.description}","price": ${product.price},"category":"${product.category}"}`
+    )
+    .join(", ");
+  const product = `[${productArrayString}]`;
+  console.log(product);
+
   try {
     await sql`WITH InsertedCommande AS (
-  INSERT INTO commande(date_commande, date_livraison, num_bon_livraison, statut_commande)
-  VALUES (CURRENT_TIMESTAMP,${date},${num_bon_livraison}, ${statut_commande})
+  INSERT INTO commande(date_commande, date_livraison, num_bon_livraison, statut_commande,list_produit)
+  VALUES (CURRENT_TIMESTAMP,${date},${num_bon_livraison}, ${statut_commande},${product})
   RETURNING id
 )
   
 
 INSERT INTO fournisseur(nom, prenom, contact, adresse, id_commande)
 SELECT ${nom_fournisseur},${prenom_fournisseur}, ${contact_fournisseur}, ${adresse_fournisseur}, id
-FROM InsertedCommande;`;
+FROM InsertedCommande;
+`;
   } catch (error: any) {
     return { message: error.message };
   }
@@ -321,13 +373,15 @@ export type ConfirmDeliveryState = {
   message: string;
 };
 export async function ConfirmDelivery(
+  productList: SaveProductType[],
   prevState: ConfirmDeliveryState,
   formData: FormData
 ) {
   const id: string = formData.get("id") as string;
-  console.log(id);
+  console.log(productList);
   try {
     await sql`UPDATE commande SET statut_commande = 'delivered' WHERE statut_commande <> 'delivered' AND id = ${id};`;
+    await saveDeliveredProduct(productList);
     revalidatePath("/dashboard/orders");
     return {
       message: "",

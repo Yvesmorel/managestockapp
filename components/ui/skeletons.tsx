@@ -383,7 +383,7 @@ export function RequestsTableSkeleton() {
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-          {Array.from({ length: 10 }).map((_, index) => (
+          {Array.from({ length: 4 }).map((_, index) => (
             <tr key={index} className="bg-gray-100">
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="h-4 bg-gray-300 rounded"></div>
@@ -417,8 +417,7 @@ export function RequestsTableSkeleton() {
   );
 }
 
-
-export  function OrderTableSkeleton() {
+export function OrderTableSkeleton() {
   return (
     <div className="overflow-auto border rounded-lg">
       <table className="min-w-full divide-y divide-gray-200">
@@ -476,49 +475,47 @@ export  function OrderTableSkeleton() {
   );
 }
 
-
-
-export  function OrderDetailsSkeleton() {
+export function OrderDetailsSkeleton() {
   return (
     <div className="container mx-auto my-8 px-4 sm:px-6 lg:px-8 animate-pulse">
       <h1 className="text-2xl font-bold mb-6 bg-gray-300 h-6 w-40 rounded"></h1>
       <div className="bg-white rounded-lg shadow-md p-6 space-y-4">
         <div className="grid grid-cols-2 gap-4">
-          <div>
+          <div className="space-y-4">
             <p className="text-muted-foreground bg-gray-300 h-4 w-32 rounded"></p>
             <p className="bg-gray-300 h-6 rounded"></p>
           </div>
-          <div>
-            <p className="text-muted-foreground bg-gray-300 h-4 w-32 rounded"></p>
-            <p className="bg-gray-300 h-6 rounded"></p>
-          </div>
-        </div>
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <p className="text-muted-foreground bg-gray-300 h-4 w-32 rounded"></p>
-            <p className="bg-gray-300 h-6 rounded"></p>
-          </div>
-          <div>
+          <div className="space-y-4">
             <p className="text-muted-foreground bg-gray-300 h-4 w-32 rounded"></p>
             <p className="bg-gray-300 h-6 rounded"></p>
           </div>
         </div>
         <div className="grid grid-cols-2 gap-4">
-          <div>
+          <div className="space-y-4">
             <p className="text-muted-foreground bg-gray-300 h-4 w-32 rounded"></p>
             <p className="bg-gray-300 h-6 rounded"></p>
           </div>
-          <div>
+          <div className="space-y-4">
             <p className="text-muted-foreground bg-gray-300 h-4 w-32 rounded"></p>
             <p className="bg-gray-300 h-6 rounded"></p>
           </div>
         </div>
         <div className="grid grid-cols-2 gap-4">
-          <div>
+          <div className="space-y-4">
             <p className="text-muted-foreground bg-gray-300 h-4 w-32 rounded"></p>
             <p className="bg-gray-300 h-6 rounded"></p>
           </div>
-          <div>
+          <div className="space-y-4">
+            <p className="text-muted-foreground bg-gray-300 h-4 w-32 rounded"></p>
+            <p className="bg-gray-300 h-6 rounded"></p>
+          </div>
+        </div>
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-4">
+            <p className="text-muted-foreground bg-gray-300 h-4 w-32 rounded"></p>
+            <p className="bg-gray-300 h-6 rounded"></p>
+          </div>
+          <div className="space-y-4">
             <p className="text-muted-foreground bg-gray-300 h-4 w-32 rounded"></p>
             <p className="bg-gray-300 h-6 rounded"></p>
           </div>
