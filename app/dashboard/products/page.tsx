@@ -49,7 +49,7 @@ export default async function Page({
         </Link>
       </div>
       <Search placeholder="Rechercher un produit..." />
-      <div className="border rounded-lg overflow-hidden bg-white">
+      <div className="border rounded-lg overflow-hidden bg-white bottomToTop">
         <Suspense fallback={<ProductTableSkeleton />}>
           <ProductsTable query={query} currentPage={currentPage} />
         </Suspense>
@@ -70,7 +70,7 @@ async function ProductsTable({
 }) {
   const products = await fetchFilteredProducts(query, currentPage);
   return (
-    <Table className="bottomToTop">
+    <Table >
       <TableHeader>
         <TableRow>
           <TableHead>Nom du produit</TableHead>

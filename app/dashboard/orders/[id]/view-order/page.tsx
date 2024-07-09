@@ -58,7 +58,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           <div className="flex justify-end">
             <Link href="/dashboard/orders">
               <Button variant="secondary" className="">
-                Cancel Order
+                Retour
               </Button>
             </Link>
           </div>
