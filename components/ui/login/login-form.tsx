@@ -21,13 +21,19 @@ const LoginForm = () => {
   return (
     <form className=" flex shadow-lg  p-1 rounded" action={dispatch}>
       <div className="w-100 h-auto flex justify-center items-center bg-white">
-      <Image src="./login-illust.svg" alt="illustration" width={300} height={400}/>
+        <Image
+          src="./login-illust.svg"
+          alt="illustration"
+          width={300}
+          height={400}
+        />
       </div>
       <Card className="w-full h-full max-w-md border-none shadow-none bg-[#e8f1f178]">
         <CardHeader className="space-y-1">
           <div className="flex gap-2 font-bold">
             <CircleStackIcon className="h-[22px] w-[22px] text-[#1e7376]" />
-          <p>G-</p><p className="text-[#1e7376]">STOCK</p>
+            <p>G-</p>
+            <p className="text-[#1e7376]">STOCK</p>
           </div>
           <CardTitle className="text-2xl">Bienvenue</CardTitle>
           <CardDescription>
@@ -50,7 +56,7 @@ const LoginForm = () => {
           <div className="space-y-2">
             <Label htmlFor="password">Mot de passe</Label>
             <Input
-               className="border-none"
+              className="border-none"
               id="password"
               type="password"
               name="password"
@@ -89,7 +95,8 @@ const LoginButton = () => {
 
   return (
     <Button className="w-full" disabled={pending} aria-disabled={pending}>
-      Sign In
+      {!pending && <p>Connctez vous</p>}
+      {pending && <p>Chargement</p>}
     </Button>
   );
 };

@@ -319,7 +319,7 @@ export function OrdersTableSkeleton() {
 }
 
 export function ProductTableSkeleton() {
-  const rows = 5; // Nombre de lignes dans le squelette
+  const rows = 3; // Nombre de lignes dans le squelette
   const columns = 5; // Nombre de colonnes dans le squelette
 
   return (
@@ -383,7 +383,7 @@ export function RequestsTableSkeleton() {
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-          {Array.from({ length: 4 }).map((_, index) => (
+          {Array.from({ length: 3 }).map((_, index) => (
             <tr key={index} className="bg-gray-100">
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="h-4 bg-gray-300 rounded"></div>
@@ -450,7 +450,7 @@ export function OrderTableSkeleton() {
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-          {Array.from({ length: 4 }).map((_, index) => (
+          {Array.from({ length: 3 }).map((_, index) => (
             <tr key={index} className="bg-gray-100">
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="h-4 bg-gray-300 rounded"></div>

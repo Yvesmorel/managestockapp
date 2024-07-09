@@ -13,13 +13,16 @@ export async function fetchFilteredProducts(
   try {
     const products = await sql`
         SELECT
-          id,nom_produit, description, prix_unitaire, quantite, createdat
-        FROM produits
+          *
+        FROM produits p JOIN categorie c ON p.id_categorie = c.id_categorie
         WHERE
-          nom_produit ILIKE ${`%${query}%`} OR
-          description ILIKE ${`%${query}%`} OR
-          prix_unitaire::text ILIKE ${`%${query}%`} OR
-          quantite::text ILIKE ${`%${query}%`}
+          p.nom_produit ILIKE ${`%${query}%`} OR
+          p.description ILIKE ${`%${query}%`} OR
+          p.prix_unitaire::text ILIKE ${`%${query}%`} OR
+          p.id_categorie::text ILIKE ${`%${query}%`} OR
+          p.quantite::text ILIKE ${`%${query}%`} OR
+          c.nom ILIKE ${`%${query}%`}
+          AND p.quantite <> 0
         LIMIT ${ITEMS_PER_PAGE}
         OFFSET ${offset}
       `;
@@ -35,12 +38,14 @@ export async function fetchProductsPages(query: string) {
   noStore();
   try {
     const countQuery = await sql`SELECT COUNT(*)
-        FROM produits
+         FROM produits p JOIN categorie c ON p.id_categorie = c.id_categorie
         WHERE
-           nom_produit ILIKE ${`%${query}%`} OR
-           description ILIKE ${`%${query}%`} OR
-           prix_unitaire::text ILIKE ${`%${query}%`} OR
-           quantite::text ILIKE ${`%${query}%`}
+          p.nom_produit ILIKE ${`%${query}%`} OR
+          p.description ILIKE ${`%${query}%`} OR
+          p.prix_unitaire::text ILIKE ${`%${query}%`} OR
+          p.id_categorie::text ILIKE ${`%${query}%`} OR
+          p.quantite::text ILIKE ${`%${query}%`} OR
+          c.nom ILIKE ${`%${query}%`} AND p.quantite <> 0;
       `;
 
     const count = countQuery.rows[0].count;
@@ -95,7 +100,7 @@ export async function fetchRequestsPages(query: string): Promise<number> {
           prenom_employe ILIKE ${`%${query}%`} OR
           poste_employe ILIKE ${`%${query}%`} OR
           adresse_employe ILIKE ${`%${query}%`} OR 
-          telephone_employe ILIKE ${`%${query}%`}
+          telephone_employe ILIKE ${`%${query}%`} 
     `;
 
     // Récupération du nombre d'enregistrements
@@ -174,7 +179,7 @@ export async function fetchProducts() {
   noStore();
   try {
     const data = await sql`
-    SELECT * FROM produits;
+    SELECT * FROM produits WHERE produits.quantite <> 0;
     `;
     console.log(data.rows);
     return data.rows;
@@ -249,5 +254,57 @@ export async function fetchOrdersPage(query: string) {
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to fetch total number of requests.");
+  }
+}
+
+export async function fecthFilteredCategory(query: string) {
+  noStore();
+
+  try {
+    const data = await sql`
+      SELECT *
+      FROM categorie
+      WHERE
+          nom ILIKE ${`%${query}%`};
+    `;
+    return data.rows;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch products.");
+  }
+}
+
+export async function fetchCategoryPage(query: string) {
+  noStore();
+  try {
+    const data = sql`
+      SELECT COUNT(*)
+      FROM categorie
+      WHERE
+        nom ILIKE ${`%${query}%`};
+    `;
+    // Récupération du nombre d'enregistrements
+    const count = (await data).rows[0].count;
+
+    // Calcul du nombre total de pages
+    const totalPages = Math.ceil(Number(count) / ITEMS_PER_PAGE);
+    return totalPages;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch total number of requests.");
+  }
+}
+
+export async function CountProductByCategory(categoryId: any) {
+  noStore();
+  try {
+    const data = await sql`
+    SELECT COUNT(*) FROM categorie c JOIN produits p ON c.id_categorie = p.id_categorie WHERE c.id_categorie =${categoryId} AND p.quantite <> 0;
+    `;
+    const count = data.rows[0].count;
+    return count;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch products.");
   }
 }

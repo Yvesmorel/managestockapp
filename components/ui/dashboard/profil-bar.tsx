@@ -11,7 +11,7 @@ export default function ProfilBar() {
           <AvatarFallback>GS</AvatarFallback>
         </Avatar>
         <div className="text-sm font-medium text-foreground">
-          v-1.0.0admin
+          v-1.0.0~admin
         </div>
       </div>
       <form
