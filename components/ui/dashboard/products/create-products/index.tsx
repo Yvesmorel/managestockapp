@@ -36,8 +36,9 @@ export default function CreateProduct({
   };
   const [state, dispatch] = useFormState(CreateProducts, initialState);
   return (
-    <div className="max-w-2xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-      <div className="space-y-6">
+    <div className="w-full h-full flex justify-center items-center ">
+    <div className="topToBottom max-w-2xl my-auto mx-auto py-12 px-4 sm:px-6 lg:px-8 flex items-center bg-white greenShadow rounded">
+      <div className="space-y-6 ">
         <div>
           <h1 className="text-3xl font-bold">Créer un nouveau produit</h1>
           <p className="mt-2 text-muted-foreground">
@@ -45,7 +46,7 @@ export default function CreateProduct({
             inventaire.
           </p>
         </div>
-        <form className="space-y-6" action={dispatch}>
+        <form className="space-y-6 " action={dispatch}>
           <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
             <div className="sm:col-span-4">
               <Label htmlFor="nom_produit">Nom du produit</Label>
@@ -182,6 +183,7 @@ export default function CreateProduct({
           )}
         </form>
       </div>
+    </div>
     </div>
   );
 }

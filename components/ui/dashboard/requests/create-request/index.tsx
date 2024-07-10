@@ -52,7 +52,7 @@ export default function CreateRequest({
   );
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full max-w-6xl mx-auto px-4 py-8 md:py-12">
       <form className="grid gap-6 p-6 sm:p-8 md:p-10" action={dispatch}>
         <div className="space-y-2">
           <h2 className="text-2xl font-bold">Créer une demande</h2>
@@ -288,8 +288,8 @@ function ProductManagement({
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-6">Liste des produits</h1>
+    <div className="container mx-auto p-4 bg-white rounded greenShadow">
+      <h1 className="text-2xl font-bold mb-6">Ajoutez des produits</h1>
       <div className="grid grid-cols-1 gap-4 mb-6">
         <div className="space-y-2">
           <label
@@ -348,13 +348,14 @@ function ProductManagement({
         >
           Ajouter
         </button>
-        <button
-          type="button"
+        <Button
+          
           className="bg-[#e8f1f1] text-[#1e7376]  px-4 py-2 rounded-md hover:opacity-40 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
           onClick={() => setProductList([])}
+          disabled={productList.length===0}
         >
           Supprimer tout
-        </button>
+        </Button>
       </div>
       <div>
         <h2 className="text-xl font-bold mb-4">Liste des produits</h2>
@@ -362,7 +363,7 @@ function ProductManagement({
           {productList.map((item, index) => (
             <li key={index} className="flex justify-between items-center mb-4">
               <span>
-                {item.product.split(" ")[1]} - Quantité: {item.quantity}
+                {item.product.split(" ")[1]} - <b>Quantité</b>: {item.quantity}
               </span>
               <Button
                 type="button"

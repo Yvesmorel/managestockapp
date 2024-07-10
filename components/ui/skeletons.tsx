@@ -251,7 +251,6 @@ export function OrdersTableSkeleton() {
           <Table>
             <TableHeader>
               <TableRow>
-             
                 <TableHead>Delivery Goods Number</TableHead>
                 <TableHead>Order Status</TableHead>
                 <TableHead className="text-right">Editer</TableHead>
@@ -309,10 +308,7 @@ export function RequestsTableSkeleton() {
         <thead className="bg-gray-50">
           <tr>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Date
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Request
+              Demande
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               Department
@@ -323,29 +319,15 @@ export function RequestsTableSkeleton() {
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               Prénoms
             </th>
+
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Position
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Address
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Phone
+              Actions
             </th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
           {Array.from({ length: 3 }).map((_, index) => (
             <tr key={index} className="bg-gray-100">
-              <td className="px-6 py-4 whitespace-nowrap">
-                <div className="h-4 bg-gray-300 rounded"></div>
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                <div className="h-4 bg-gray-300 rounded"></div>
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                <div className="h-4 bg-gray-300 rounded"></div>
-              </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="h-4 bg-gray-300 rounded"></div>
               </td>
@@ -375,23 +357,18 @@ export function OrderTableSkeleton() {
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
           <tr>
+           
             <th
               scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
             >
-              Order Date
+              Numero du bon de livraison
             </th>
             <th
               scope="col"
               className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
             >
-              Delivery Good Number
-            </th>
-            <th
-              scope="col"
-              className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              Order Status
+              Statut de la demande
             </th>
             <th
               scope="col"
@@ -405,9 +382,6 @@ export function OrderTableSkeleton() {
           {Array.from({ length: 3 }).map((_, index) => (
             <tr key={index} className="bg-gray-100">
               <td className="px-6 py-4 whitespace-nowrap">
-                <div className="h-4 bg-gray-300 rounded"></div>
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-center">
                 <div className="h-4 bg-gray-300 rounded"></div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-center">
