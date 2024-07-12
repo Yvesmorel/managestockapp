@@ -1,9 +1,15 @@
-import { CountProductByCategory, fecthFilteredCategory } from "@/app/lib/data";
+import {
+  CountProductByCategory,
+  fecthFilteredCategory,
+  fetchCategoryPage,
+} from "@/app/lib/data";
+import CreateCategrieForm from "@/components/ui/dashboard/category/create-category";
+import Pagination from "@/components/ui/dashboard/pagination";
 import Search from "@/components/ui/search";
 import { QueryResultRow } from "@vercel/postgres";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-
+import clsx from "clsx";
 export default async function Page({
   searchParams,
 }: {
@@ -14,21 +20,33 @@ export default async function Page({
 }) {
   const query = searchParams?.query || "";
   const currentPage = Number(searchParams?.page) || 1;
+  let categories;
   let totalPages;
   try {
-    totalPages = await fecthFilteredCategory(query);
+    totalPages = await fetchCategoryPage(query);
+    categories = await fecthFilteredCategory(query, currentPage);
   } catch (error) {
     notFound();
   }
 
   return (
-    <div className="w-full max-w-6xl mx-auto px-4 py-8 md:py-12">
-      <h1 className="text-2xl font-bold mb-6">Categories de produits</h1>
+    <div className="w-full h-full max-w-6xl mx-auto px-4 py-8 md:py-12 flex flex-col relative">
+      <div className="flex w-full justify-between">
+        <h1 className="text-2xl font-bold mb-6">Categories de produits</h1>
+        <CreateCategrieForm />
+      </div>
+
       <Search placeholder="Rechercher une categorie..." />
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {totalPages.map((category, key) => (
-          <CategoryCard key={key} category={category} />
-        ))}
+      <div className="flex-1 w-full flex  items-center">
+        <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {categories.map((category, key) => (
+            <CategoryCard key={key} category={category} />
+          ))}
+        </div>
+      </div>
+
+      <div className="mt-5 flex w-full justify-center">
+        <Pagination totalPages={totalPages} />
       </div>
     </div>
   );

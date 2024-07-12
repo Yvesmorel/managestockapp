@@ -78,7 +78,7 @@ export async function fetchFilteredRequests(
         LIMIT ${ITEMS_PER_PAGE}
         OFFSET ${offset}
       `;
-    console.log(products.rows);
+  
 
     return products.rows;
   } catch (error) {
@@ -156,7 +156,7 @@ export async function fetchDepartement() {
     const data = await sql`
     SELECT * FROM departement;
     `;
-    console.log(data.rows);
+
     return data.rows;
   } catch (error) {
     console.error("Database Error:", error);
@@ -169,7 +169,7 @@ export async function fetchCategories() {
     const data = await sql`
     SELECT * FROM categorie;
     `;
-    console.log(data.rows);
+  
     return data.rows;
   } catch (error) {
     console.error("Database Error:", error);
@@ -182,7 +182,7 @@ export async function fetchProducts() {
     const data = await sql`
     SELECT * FROM produits WHERE produits.quantite <> 0;
     `;
-    console.log(data.rows);
+  
     return data.rows;
   } catch (error) {
     console.error("Database Error:", error);
@@ -258,15 +258,17 @@ export async function fetchOrdersPage(query: string) {
   }
 }
 
-export async function fecthFilteredCategory(query: string) {
+export async function fecthFilteredCategory(query: string, currentPage: number) {
   noStore();
-
+  const offset = (currentPage - 1) * 12;
   try {
     const data = await sql`
       SELECT *
       FROM categorie
       WHERE
-          nom ILIKE ${`%${query}%`};
+          nom ILIKE ${`%${query}%`}
+           LIMIT 12
+        OFFSET ${offset}
     `;
     return data.rows;
   } catch (error) {
@@ -288,7 +290,7 @@ export async function fetchCategoryPage(query: string) {
     const count = (await data).rows[0].count;
 
     // Calcul du nombre total de pages
-    const totalPages = Math.ceil(Number(count) / ITEMS_PER_PAGE);
+    const totalPages = Math.ceil(Number(count) / 12);
     return totalPages;
   } catch (error) {
     console.error("Database Error:", error);
@@ -298,6 +300,7 @@ export async function fetchCategoryPage(query: string) {
 
 export async function CountProductByCategory(categoryId: any) {
   noStore();
+  
   try {
     const data = await sql`
     SELECT SUM(p.quantite) AS total_quantite

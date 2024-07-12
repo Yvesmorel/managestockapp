@@ -38,7 +38,7 @@ export default async function Page({
   }
 
   return (
-    <div className="w-full max-w-6xl mx-auto px-4 py-8 md:py-12">
+    <div className="w-full max-w-6xl mx-auto px-4 py-8 md:py-12 flex flex-col h-full">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold">Produits</h1>
         <Link href="/dashboard/products/create-products">
@@ -49,10 +49,12 @@ export default async function Page({
         </Link>
       </div>
       <Search placeholder="Rechercher un produit..." />
-      <div className="border-none rounded-lg greenShadow overflow-hidden bg-white bottomToTop">
-        <Suspense fallback={<ProductTableSkeleton />}>
+      <div className="flex-1 flex w-full items-center">
+      <div className="w-full border-none rounded-lg greenShadow overflow-hidden bg-white bottomToTop">
+        {/* <Suspense fallback={<ProductTableSkeleton />}> */}
           <ProductsTable query={query} currentPage={currentPage} />
-        </Suspense>
+        {/* </Suspense> */}
+      </div>
       </div>
       <div className="mt-5 flex w-full justify-center">
         <Pagination totalPages={totalPages} />

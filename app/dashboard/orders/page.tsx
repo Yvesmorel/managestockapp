@@ -28,7 +28,7 @@ export default async function Component({
     notFound();
   }
   return (
-    <div className="w-full max-w-6xl mx-auto px-4 py-8 md:py-12">
+    <div className="w-full max-w-6xl mx-auto px-4 py-8 md:py-12 flex flex-col h-full">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold">Commandes</h1>
         <Link href="/dashboard/orders/create-orders">
@@ -39,10 +39,12 @@ export default async function Component({
         </Link>
       </div>
       <Search placeholder="Rechercher une commande..." />
-      <div className="border-none rounded-lg overflow-hidden greenShadow">
-        <Suspense fallback={<OrderTableSkeleton />}>
-          <OrdersTable query={query} currentPage={currentPage} />
-        </Suspense>
+      <div className="flex-1 flex w-full items-center">
+        <div className="w-full border-none rounded-lg overflow-hidden greenShadow">
+          {/* <Suspense fallback={<OrderTableSkeleton />}> */}
+            <OrdersTable query={query} currentPage={currentPage} />
+          {/* </Suspense> */}
+        </div>
       </div>
       <div className="mt-5 flex w-full justify-center">
         <Pagination totalPages={totalPages} />
@@ -127,7 +129,7 @@ async function OrdersTable({
                 <UpdateDelivery
                   id={order.id}
                   list_produit={order.list_produit}
-                  dislabled={order.statut_commande!=="pending"}
+                  dislabled={order.statut_commande !== "pending"}
                 />
               </div>
             </td>

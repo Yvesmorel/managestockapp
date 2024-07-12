@@ -32,7 +32,7 @@ export default async function Page({
     notFound();
   }
   return (
-    <div className="w-full max-w-6xl mx-auto px-4 py-8 md:py-12">
+    <div className="w-full max-w-6xl mx-auto px-4 py-8 md:py-12 flex flex-col h-full">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold">Demandes</h1>
         <Link href="/dashboard/requests/create-requests">
@@ -43,10 +43,12 @@ export default async function Page({
         </Link>
       </div>
       <Search placeholder="Rechercher une demande..." />
-      <div className="border-none greenShadow rounded-lg overflow-hidden">
-        <Suspense fallback={<RequestsTableSkeleton />}>
+      <div className="flex-1 flex w-full items-center">
+      <div className="w-full border-none greenShadow rounded-lg overflow-hidden">
+        {/* <Suspense fallback={<RequestsTableSkeleton />}> */}
           <RequestTable query={query} currentPage={currentPage} />
-        </Suspense>
+        {/* </Suspense> */}
+      </div>
       </div>
       <div className="mt-5 flex w-full justify-center">
         <Pagination totalPages={totalPages} />

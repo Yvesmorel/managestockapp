@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import { poppins } from "@/components/ui/font";
 import "./globals.css";
 import LoaderPageAnimation from "@/components/ui/LoaderPage";
-
+import { Toaster} from 'sonner'
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -20,6 +20,7 @@ export default function RootLayout({
     <html lang="en" style={{overflow:"hidden"}}>
       <body  className={inter.className}>{children}</body>
       <LoaderPageAnimation/>
+      <Toaster />
     </html>
   );
 }

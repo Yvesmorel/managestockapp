@@ -18,6 +18,7 @@ import { useState, useRef, Dispatch, SetStateAction } from "react";
 import { SaveProductType } from "@/app/lib/definitions";
 import { QueryResultRow } from "@vercel/postgres";
 import LoadingButton from "../../loading-button";
+import CreateCategrieForm from "../category/create-category";
 export default function CreateOders({
   categories,
 }: {
@@ -238,6 +239,14 @@ export default function CreateOders({
             <CreateOrdersButton productList={productList} />
           </div>
         </form>
+        <div className="w-full greenShadow bg-white p-4 rounded flex flex-col gap-2">
+          <h1 className="text-3xl font-bold">Categories</h1>
+          <p className="mt-2 text-muted-foreground">
+           Ajouter une categorie si elle n'existe pas
+          </p>
+          <CreateCategrieForm/>
+        </div>
+        
       </div>
     </div>
   );

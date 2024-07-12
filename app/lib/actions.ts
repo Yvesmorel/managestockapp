@@ -7,6 +7,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { productListType, SaveProductType } from "./definitions";
 
+
 const CreateOrdersFormShema = z.object({
   date_livraison: z.string({
     required_error: "Veuillez entrer la date de livraison",
@@ -30,7 +31,11 @@ const CreateOrdersFormShema = z.object({
     required_error: "Veuillez entrer le numéro de contact du fournisseur",
   }),
 });
-
+const CreateCategoryFormShema = z.object({
+  category_name: z.string({
+    required_error: "Veuillez entrer le nom de la categorie.",
+  }),
+});
 
 const CreateRequestFormShema = z.object({
   id: z.string(),
@@ -66,7 +71,8 @@ const CreateProductsFormSchema = z.object({
   }),
   prix_unitaire: z.string({
     required_error: "Veuillez entrer le prix unitaire du produit",
-    invalid_type_error: "Veuillez entrer un montant valide pour le prix unitaire",
+    invalid_type_error:
+      "Veuillez entrer un montant valide pour le prix unitaire",
   }),
   quantite: z.string({
     required_error: "Veuillez entrer la quantité du produit",
@@ -123,6 +129,12 @@ export type UpdateProductsState = {
   };
   message?: string | null;
 };
+export type CategoryState = {
+  errors?: {
+    category_name?: string[];
+  };
+  message?: string | null;
+};
 export type OrdersState = {
   errors?: {
     date_livraison?: string[];
@@ -135,12 +147,13 @@ export type OrdersState = {
   };
   message?: string | null;
 };
+
 export async function CreateProducts(
   prevState: ProductsState,
   formData: FormData
 ) {
   const rawData = Object.fromEntries(formData.entries());
-  console.log(rawData);
+
 
   const validatedData = CreateProductsSchema.safeParse(rawData);
 
@@ -173,7 +186,7 @@ export async function UpdateProducts(
   formData: FormData
 ) {
   const rawData = Object.fromEntries(formData.entries());
-  console.log(rawData);
+
 
   const validatedData = CreateProductsSchema.safeParse(rawData);
 
@@ -183,10 +196,10 @@ export async function UpdateProducts(
       message: "Champs manquants. Échec de la modification du produit.",
     };
   }
-  const { nom_produit, description, prix_unitaire, quantite,categorie_id } =
+  const { nom_produit, description, prix_unitaire, quantite, categorie_id } =
     validatedData.data;
-    console.log('caegorie',categorie_id);
-    
+ 
+
   try {
     await sql`UPDATE produits
 SET nom_produit = ${nom_produit},
@@ -206,7 +219,7 @@ export async function deleteProducts(id: string) {
   try {
     await sql`DELETE FROM produits WHERE id = ${id}`;
   } catch (error: any) {
-    console.log(error.message);
+    
   }
   revalidatePath("/dashboard/products");
 }
@@ -242,7 +255,7 @@ export async function CreateRequests(
     )
     .join(", ");
   const product = `[${productArrayString}]`;
-  console.log(product);
+
 
   try {
     await sql`
@@ -275,7 +288,7 @@ async function updateProductQuantities(products: productListType) {
   for (const product of products) {
     const { product: produit, quantity, totalQuantity } = product;
     const finalQuantity = totalQuantity - quantity;
-    console.log(finalQuantity);
+  
     await sql`
       UPDATE produits
       SET quantite = ${finalQuantity}
@@ -294,10 +307,10 @@ async function saveDeliveredProduct(products: SaveProductType[]) {
       category,
     } = product;
 
-    
-
     await sql`
-      INSERT INTO produits (nom_produit, description, prix_unitaire, quantite,createdat,userid,id_categorie) VALUES (${nom_produit}, ${description},${price},${quantity},${date},'userjsqfbqjfqh1',${category.split(' ')[0]});
+      INSERT INTO produits (nom_produit, description, prix_unitaire, quantite,createdat,userid,id_categorie) VALUES (${nom_produit}, ${description},${price},${quantity},${date},'userjsqfbqjfqh1',${
+      category.split(" ")[0]
+    });
     `;
   }
 }
@@ -308,7 +321,7 @@ export async function CreateOrders(
   formData: FormData
 ) {
   const rawData = Object.fromEntries(formData.entries());
-  console.log(rawData);
+
 
   const validatedData = CreateOrdersFormShema.safeParse(rawData);
 
@@ -337,7 +350,7 @@ export async function CreateOrders(
     )
     .join(", ");
   const product = `[${productArrayString}]`;
-  console.log(product);
+
 
   try {
     await sql`WITH InsertedCommande AS (
@@ -362,7 +375,7 @@ export async function authenticate(
   prevState: string | undefined,
   formData: FormData
 ) {
-  console.log(formData);
+ 
 
   try {
     await signIn("credentials", formData);
@@ -381,25 +394,53 @@ export async function authenticate(
 export type ConfirmDeliveryState = {
   message: string;
 };
+
 export async function ConfirmDelivery(
   productList: SaveProductType[],
   prevState: ConfirmDeliveryState,
   formData: FormData
 ) {
   const id: string = formData.get("id") as string;
-  console.log(productList);
+
+  
   try {
     await sql`UPDATE commande SET statut_commande = 'delivered' WHERE statut_commande <> 'delivered' AND id = ${id};`;
     await saveDeliveredProduct(productList);
     revalidatePath("/dashboard/orders");
+    formData.delete("id")
     return {
       message: "",
     };
   } catch (error: any) {
-    console.log(error.message);
+  
 
     return {
       message: "",
+    };
+  }
+}
+
+export async function CreateCategory(
+  prevState: CategoryState,
+  formData: FormData
+) {
+  const category_name: string = formData.get("category_name") as string;
+  try {
+    await sql`INSERT INTO categorie (
+nom,
+libelle
+    ) VALUES (
+     ${category_name},
+     ${category_name}
+    );`;
+    revalidatePath("/dashboard/category");
+   
+    return {
+      message: "",
+    };
+  } catch (error: any) {
+    return {
+      message:error.message,
     };
   }
 }

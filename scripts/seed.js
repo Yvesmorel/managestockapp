@@ -9,10 +9,10 @@ async function createCategories(client) {
   FOREIGN KEY (id_produit) REFERENCES produits(id)
 );
 `;
-    console.log(result);
+
     return;
   } catch (error) {
-    console.log(error.message);
+  
     return;
   }
 }
@@ -25,10 +25,10 @@ async function createCommandes(client) {
   num_bon_livraison VARCHAR(30) NOT NULL,
   statut_commande VARCHAR(40) NOT NULL
 );`;
-    console.log(result);
+  
     return;
   } catch (error) {
-    console.log(error.message);
+   
     return;
   }
 }
@@ -41,10 +41,10 @@ async function createComprendre(client) {
   FOREIGN KEY (id_demande) REFERENCES demande(id),
   FOREIGN KEY (id_produit) REFERENCES produits(id)
 );`;
-    console.log(result);
+
     return;
   } catch (error) {
-    console.log(error.message);
+
     return;
   }
 }
@@ -58,10 +58,10 @@ async function createConcerner(client) {
   FOREIGN KEY (id_commande) REFERENCES commande(id),
   FOREIGN KEY (id_produit) REFERENCES produits(id)
 );`;
-    console.log(result);
+   
     return;
   } catch (error) {
-    console.log(error.message);
+  
     return;
   }
 }
@@ -74,10 +74,10 @@ async function createDemande(client) {
   id_employe INT NOT NULL,
   FOREIGN KEY (id_employe) REFERENCES employe(id)
 );`;
-    console.log(result);
+  
     return;
   } catch (error) {
-    console.log(error.message);
+   
     return;
   }
 }
@@ -88,10 +88,10 @@ async function createDepartement(client) {
   nom_departement VARCHAR(50) NOT NULL,
   libelle VARCHAR(50) NOT NULL
 );`;
-    console.log(result);
+
     return;
   } catch (error) {
-    console.log(error.message);
+  
     return;
   }
 }
@@ -108,10 +108,10 @@ async function createEmploye(client) {
   telephone VARCHAR(15) NOT NULL,
   FOREIGN KEY (id_departement) REFERENCES departement(id)
 );`;
-    console.log(result);
+   
     return;
   } catch (error) {
-    console.log(error.message);
+   
     return;
   }
 }
@@ -127,10 +127,10 @@ async function createFournisseur(client) {
   id_commande INT NOT NULL,
   FOREIGN KEY (id_commande) REFERENCES commande(id)
 );`;
-    console.log(result);
+ 
     return;
   } catch (error) {
-    console.log(error.message);
+
     return;
   }
 }
@@ -143,10 +143,10 @@ async function createProduits(client) {
   prix_unitaire INT NOT NULL,
   quantite INT NOT NULL
 );`;
-    console.log(result);
+   
     return;
   } catch (error) {
-    console.log(error.message);
+ 
     return;
   }
 }
