@@ -9,8 +9,14 @@ import {
   ArrowPathRoundedSquareIcon,
   ChatBubbleBottomCenterTextIcon,
   BuildingStorefrontIcon,
+  ChartBarIcon
 } from "@heroicons/react/16/solid";
 const navItems = [
+  {
+    itemName: "Rapport",
+    itemLink: "/dashboard/report",
+    itemIcon: ChartBarIcon,
+  },
   {
     itemName: "Categories",
     itemLink: "/dashboard/category",

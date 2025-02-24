@@ -40,7 +40,7 @@ export default function EditForm({
   const [state, dispatch] = useFormState(UpdateProductsWithId, initialState);
   return (
     <div className="w-full h-full flex justify-center items-center ">
-    <div className="topToBottom max-w-2xl my-auto mx-auto py-12 px-4 sm:px-6 lg:px-8 flex items-center bg-white greenShadow rounded">
+    <div className="max-w-2xl my-auto mx-auto py-12 px-4 sm:px-6 lg:px-8 flex items-center bg-white greenShadow rounded">
       <div className="space-y-6">
         <div>
           <h1 className="text-3xl font-bold">Modifier ce produit</h1>

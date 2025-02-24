@@ -10,6 +10,9 @@ import { QueryResultRow } from "@vercel/postgres";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import clsx from "clsx";
+import EmptyText from "@/components/ui/dashboard/empty";
+import { Button } from "@/components/ui/button";
+import { DeleteCategory } from "@/components/ui/dashboard/category/buttons";
 export default async function Page({
   searchParams,
 }: {
@@ -22,12 +25,15 @@ export default async function Page({
   const currentPage = Number(searchParams?.page) || 1;
   let categories;
   let totalPages;
+
   try {
     totalPages = await fetchCategoryPage(query);
     categories = await fecthFilteredCategory(query, currentPage);
   } catch (error) {
     notFound();
   }
+
+  if (categories.length === 0) return <EmptyText text="Aucunes categories" />;
 
   return (
     <div className="w-full h-full max-w-6xl mx-auto px-4 py-8 md:py-12 flex flex-col relative">
@@ -53,19 +59,22 @@ export default async function Page({
 }
 
 async function CategoryCard({ category }: { category: QueryResultRow }) {
+
   const currentCategoryProductsCount = await CountProductByCategory(
     category.id_categorie
   );
+
   return (
-    <Link href={`/dashboard/products?page=1&query=${category.nom}`}>
-      <div className="bg-white rounded-lg greenShadow cursor-pointer overflow-hidden   hover:text-[#1e7376] bottomToTop">
+    <div className="bg-white rounded-lg greenShadow cursor-pointer overflow-hidden   hover:text-[#1e7376] ">
+      <Link href={`/dashboard/products?page=1&query=${category.nom}`}>
         <div className="p-6">
           <h2 className="text-lg font-semibold mb-2">{category.nom}</h2>
           <p className="text-gray-500 text-sm">
             {currentCategoryProductsCount.total_quantite || 0} produits
           </p>
         </div>
-      </div>
-    </Link>
+      </Link>
+      <DeleteCategory id={category.id_categorie} quantity={currentCategoryProductsCount.total_quantite} />
+    </div>
   );
 }

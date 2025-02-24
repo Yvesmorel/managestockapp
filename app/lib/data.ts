@@ -163,6 +163,7 @@ export async function fetchDepartement() {
     throw new Error("Failed to fetch products.");
   }
 }
+
 export async function fetchCategories() {
   noStore();
   try {

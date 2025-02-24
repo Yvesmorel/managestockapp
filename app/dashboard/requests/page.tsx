@@ -15,6 +15,7 @@ import {
 import Link from "next/link";
 import { EyeIcon, PlusIcon } from "lucide-react";
 import { notFound } from "next/navigation";
+import EmptyText from "@/components/ui/dashboard/empty";
 export default async function Page({
   searchParams,
 }: {
@@ -36,7 +37,7 @@ export default async function Page({
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold">Demandes</h1>
         <Link href="/dashboard/requests/create-requests">
-          <Button size="lg" className="topToBottom">
+          <Button size="lg">
             <PlusIcon className="mr-2 h-5 w-5 h-[24px] w-[24px]" />
             Ajouter une demande
           </Button>
@@ -44,11 +45,11 @@ export default async function Page({
       </div>
       <Search placeholder="Rechercher une demande..." />
       <div className="flex-1 flex w-full items-center">
-      <div className="w-full border-none greenShadow rounded-lg overflow-hidden">
-        {/* <Suspense fallback={<RequestsTableSkeleton />}> */}
+        <div className="w-full border-none  rounded-lg overflow-hidden">
+          {/* <Suspense fallback={<RequestsTableSkeleton />}> */}
           <RequestTable query={query} currentPage={currentPage} />
-        {/* </Suspense> */}
-      </div>
+          {/* </Suspense> */}
+        </div>
       </div>
       <div className="mt-5 flex w-full justify-center">
         <Pagination totalPages={totalPages} />
@@ -66,16 +67,12 @@ async function RequestTable({
 }) {
   const requests = await fetchFilteredRequests(query, currentPage);
 
+  if (requests.length === 0) return <EmptyText text="Aucune demandes" />;
+
   return (
-    <table className="min-w-full divide-y divide-gray-200 bottomToTop">
+    <table className="min-w-full divide-y divide-gray-200 greenShadow">
       <thead className="bg-white">
         <tr>
-          {/* <th
-            scope="col"
-            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-          >
-            Date
-          </th> */}
           <th
             scope="col"
             className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"

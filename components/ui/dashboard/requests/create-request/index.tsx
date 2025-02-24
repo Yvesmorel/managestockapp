@@ -18,11 +18,10 @@ import Link from "next/link";
 import { useFormStatus } from "react-dom";
 import { useFormState } from "react-dom";
 import { CreateRequests } from "@/app/lib/actions";
-import { fetchDepartement } from "@/app/lib/data";
-import DeptSelect from "@/components/ui/dashboard/requests/depeartement-select";
 import { productQuantity } from "@/app/lib/utils";
 import { productListType } from "@/app/lib/definitions";
 import LoadingButton from "@/components/ui/loading-button";
+import EmptyText from "../../empty";
 
 export default function CreateRequest({
   departement,
@@ -31,6 +30,9 @@ export default function CreateRequest({
   departement: QueryResultRow[];
   products: QueryResultRow[];
 }) {
+
+  if (departement.length === 0) return <EmptyText text="Aucuns departements" />;
+
   const initialState = {
     errors: {
       libelle_demande: [],
@@ -43,6 +45,7 @@ export default function CreateRequest({
     },
     message: "",
   };
+
   const [productList, setProductList] = useState<
     { product: string; quantity: number; totalQuantity: number }[]
   >([]);

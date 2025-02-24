@@ -20,6 +20,7 @@ import {
   UpdateProducts,
 } from "@/components/ui/dashboard/products/buttons";
 import { notFound } from "next/navigation";
+import EmptyText from "@/components/ui/dashboard/empty";
 export default async function Page({
   searchParams,
 }: {
@@ -42,7 +43,7 @@ export default async function Page({
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold">Produits</h1>
         <Link href="/dashboard/products/create-products">
-          <Button size="lg" className="shadow topToBottom">
+          <Button size="lg" className="shadow">
             <PlusIcon className="mr-2 h-5 w-5 h-[24px] w-[24px]" />
             Ajouter un produit
           </Button>
@@ -50,7 +51,7 @@ export default async function Page({
       </div>
       <Search placeholder="Rechercher un produit..." />
       <div className="flex-1 flex w-full items-center">
-      <div className="w-full border-none rounded-lg greenShadow overflow-hidden bg-white bottomToTop">
+      <div className="w-full border-none rounded-lg overflow-hidden ">
         {/* <Suspense fallback={<ProductTableSkeleton />}> */}
           <ProductsTable query={query} currentPage={currentPage} />
         {/* </Suspense> */}
@@ -71,8 +72,11 @@ async function ProductsTable({
   currentPage: number;
 }) {
   const products = await fetchFilteredProducts(query, currentPage);
+
+  if (products.length === 0) return <EmptyText text="Aucuns produits" />;
+
   return (
-    <Table >
+    <Table className="bg-white">
       <TableHeader>
         <TableRow>
           <TableHead>Nom du produit</TableHead>

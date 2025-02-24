@@ -19,6 +19,7 @@ export default function ProfilBar() {
         action={async () => {
           "use server";
           await signOut();
+          
         }}
       >
         <Button variant="ghost" size="sm" className="hover:bg-[#e8f1f1] hover:text-[#1e7376] mr-1">

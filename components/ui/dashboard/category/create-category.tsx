@@ -26,7 +26,7 @@ function CreateCategrieForm() {
         placeholder="Entrez le nom de la categorie"
       />
       {state.message==='duplicate key value violates unique constraint "unique_nom"' && (
-        <Alert variant="destructive" className="absolute bottom-10 left-2 bg-white w-50 bottomToTop border-none">
+        <Alert variant="destructive" className="absolute bottom-10 left-2 bg-white w-50 border-none">
           <AlertCircle className="h-4 w-4" />
           <AlertTitle>Erreur</AlertTitle>
           <AlertDescription>Cette categorie existe déja.</AlertDescription>

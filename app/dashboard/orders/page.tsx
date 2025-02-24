@@ -11,6 +11,7 @@ import { UpdateDelivery } from "@/components/ui/dashboard/orders/buttons";
 import { EyeIcon } from "lucide-react";
 import { getStatusClasses } from "@/app/lib/utils";
 import { notFound } from "next/navigation";
+import EmptyText from "@/components/ui/dashboard/empty";
 export default async function Component({
   searchParams,
 }: {
@@ -32,7 +33,7 @@ export default async function Component({
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold">Commandes</h1>
         <Link href="/dashboard/orders/create-orders">
-          <Button size="lg" className="topToBottom">
+          <Button size="lg" >
             <PlusIcon className="mr-2 h-5 w-5 h-[24px] w-[24px]" />
             Ajouter une commande
           </Button>
@@ -40,9 +41,9 @@ export default async function Component({
       </div>
       <Search placeholder="Rechercher une commande..." />
       <div className="flex-1 flex w-full items-center">
-        <div className="w-full border-none rounded-lg overflow-hidden greenShadow">
+        <div className="w-full border-none rounded-lg overflow-hidden ">
           {/* <Suspense fallback={<OrderTableSkeleton />}> */}
-            <OrdersTable query={query} currentPage={currentPage} />
+          <OrdersTable query={query} currentPage={currentPage} />
           {/* </Suspense> */}
         </div>
       </div>
@@ -62,16 +63,11 @@ async function OrdersTable({
 }) {
   const orders = await fecthFilteredOrders(query, currentPage);
 
+  if (orders.length === 0) return <EmptyText text="Aucunes commandes" />;
   return (
-    <table className="min-w-full divide-y divide-gray-200 bottomToTop ">
+    <table className="min-w-full divide-y divide-gray-200 greenShadow">
       <thead className="bg-white">
         <tr>
-          {/* <th
-            scope="col"
-            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-          >
-            Date de commande
-          </th> */}
           <th
             scope="col"
             className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"

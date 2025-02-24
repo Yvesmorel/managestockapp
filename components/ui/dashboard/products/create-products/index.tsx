@@ -36,7 +36,7 @@ export default function CreateProduct({
   const [state, dispatch] = useFormState(CreateProducts, initialState);
   return (
     <div className="w-full h-full flex justify-center items-center flex-col">
-      <div className="topToBottom max-w-2xl my-auto mx-auto py-12 px-4 sm:px-6 lg:px-8 flex  items-center bg-white greenShadow rounded">
+      <div className="max-w-2xl my-auto mx-auto py-12 px-4 sm:px-6 lg:px-8 flex  items-center bg-white greenShadow rounded">
         <div className="space-y-6 ">
           <div>
             <h1 className="text-3xl font-bold">Créer un nouveau produit</h1>
@@ -76,7 +76,7 @@ export default function CreateProduct({
                   id="prix_unitaire"
                   type="number"
                   placeholder="Entrez le prix"
-                  min="0"
+                  min="1"
                   step="0.01"
                   required
                   name="prix_unitaire"
